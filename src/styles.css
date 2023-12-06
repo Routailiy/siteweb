@@ -1,0 +1,160 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Open+Sans:wght@300&display=swap');
+:root {
+    --green: #68c054;
+    --dark_green : #104533;
+    --lightgreen:#e6eed6;
+    --grey:#646464;
+    --white: white;
+    --width: 100px;
+    --depth: 180px;
+    --yellow: rgb(251,226,84);
+    --lightgray : #eff3f5;
+    --orange: #f9ac31;
+  }
+  
+body{
+  overflow-x: hidden;
+  font-family:"Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif;
+    color: #444444;
+  }
+  
+  a {
+    color: var(--grey);
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: var(--green);
+    text-decoration: none;
+  }
+
+  h1{
+    color: var(--green);
+    font-family: "Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  h2{
+    color:var(--grey);
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif;
+  }
+  /*** Section Title ***/
+.section-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.section-title span:first-child,
+.section-title span:last-child {
+  position: relative;
+  display: inline-block;
+  margin-right: 30px;
+  width: 30px;
+  height: 2px;
+}
+
+.section-title span:last-child {
+  margin-right: 0;
+  margin-left: 30px;
+}
+
+.section-title span:first-child::after,
+.section-title span:last-child::after {
+  position: absolute;
+  content: "";
+  width: 15px;
+  height: 2px;
+  top: 0;
+  right: -20px;
+}
+
+.section-title span:last-child::after {
+  right: auto;
+  left: -20px;
+}
+.section-title.text-secondary span:first-child,
+.section-title.text-secondary span:last-child,
+.section-title.text-secondary span:first-child::after,
+.section-title.text-secondary span:last-child::after {
+  background: var(--grey);
+}
+
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: "Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif; }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: "Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif; }
+
+/*--------------------------------------------------------------
+# Sections & Section Header
+--------------------------------------------------------------*/
+section {
+  padding: 60px 0;
+  overflow: hidden;
+}
+
+.sections-bg {
+  background-color: #f6f6f6;
+}
+
+.section-header {
+  text-align: center;
+  padding-bottom: 60px;
+}
+
+.section-header h2 {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  position: relative;
+  color: var(--green);
+  font-weight: bolder;
+  font-size : xx-large;
+}
+
+.section-header h2:after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: var(--color-primary);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.section-header p {
+  margin-bottom: 0;
+  color: #6f6f6f;
+}
+
+.aos-init {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+
+.aos-animate {
+  visibility: visible;
+  opacity: 1;
+}

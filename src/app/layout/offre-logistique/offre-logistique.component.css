@@ -1,0 +1,109 @@
+/*--------------------------------------------------------------
+# logistic_services
+--------------------------------------------------------------*/
+.logistic_services h2{
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.logistic_services .row {
+    padding-top: 40px;
+  }
+  
+  .logistic_services .box {
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    background: #e6eed6;
+    box-shadow: 0 0 29px 0 rgba(68, 88, 144, 0.12);
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+    z-index: 1;
+    text-align: center;
+    height: 100%;
+  }
+
+  .logistic_services .box::before {
+    content: "";
+    position: absolute;
+    background: #cbe0fb;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 100%;
+    transition: all 0.3s;
+    z-index: -1;
+  }
+
+  .logistic_services .box:hover::before {
+    background: var(--green);
+    top: 0;
+    border-radius: 0px;
+  }
+
+  #logistic_services .box .icon {
+    margin-bottom: 15px;
+  }
+  
+  #logistic_services .icon i {
+    font-size: 48px;
+    line-height: 1;
+    color: var(--green);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .logistic_services .title {
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+  
+  .logistic_services ul {
+    padding: 20px 0;
+    list-style: none;
+    color: #111;
+    text-align: start;
+    line-height: 20px;
+  }
+  
+  .logistic_services ul li {
+    padding: 10px 0 10px 30px;
+    position: relative;
+  }
+
+  #logistic_services .box i {
+   color: var(--green);
+   margin-right: 5px;
+  }
+
+  #logistic_services .box:hover .title a,
+  #logistic_services .box:hover ul li i {
+    color: #fff;
+  }
+  
+  #logistic_services .box:hover .icon i {
+    color: #fff;
+  }
+  
+  
+  @media (max-width: 992px) {
+    .logistic_services .box {
+      max-width: 60%;
+      margin: 0 auto 30px auto;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .logistic_services .box {
+      max-width: 80%;
+      margin: 0 auto 30px auto;
+    }
+  }
+  
+  @media (max-width: 420px) {
+    .logistic_services .box {
+      max-width: 100%;
+      margin: 0 auto 30px auto;
+    }
+  }
+  

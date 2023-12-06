@@ -1,0 +1,347 @@
+<div class="simulator">
+  <div class="container">
+  <div class="row">
+    <div class="col-md-12">  
+      <!-- Simulator form -->
+          
+          <h1 class="main-title" data-aos="fade-up"><i class="fa-solid fa-cube f-4" data-aos="zoom-in" data-aos-delay="200" data-aos-duration="500"></i>Simuler l'envoi de mon colis</h1>
+      
+      
+
+      <form (ngSubmit)="onSubmit(formulaire)" #formulaire="ngForm" (change)="showPrice()" >
+        <div class="row">
+          <div class="col-sm-12 col-md-8 simulator-form" *ngIf="showFirstRow"  id="1">
+              <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100">
+                <label>Je choisis le type d'expédition</label>
+                  <div class="d-flex">
+                    <div class="form-check mr-5 " style="margin-right: 50px;">
+                      <input type="radio" class="form-check-input" id="pointRelais" name="typeExpedition" [(ngModel)]="typeExpedition" value="Point de relais" required>
+                      <label class="form-check-label" for="pointRelais">Point de relais</label>
+                    </div>
+                  </div>
+                <div class="form-check">
+                  <input type="radio" class="form-check-input" id="aDomicile" name="typeExpedition" [(ngModel)]="typeExpedition" value="À domicile" required>
+                  <label class="form-check-label" for="aDomicile">À domicile</label>
+                </div>
+              </div>
+              <!-- <h5>Je saisis le poids de mon colis (kg)</h5> -->
+              <div class="form-group f-5" data-aos="fade-right" data-aos-delay="200">
+                <label for="poids">Je saisis le poids de mon colis (kg) </label>
+                <input type="number" min="0" max="20" class="form-control" id="poids" name="poids" value="poids" placeholder="le poids de mon colis" [(ngModel)]="poids" required>
+              </div>       
+        <div class="row">
+          <div>
+           
+            <a (click)="getLocation()" style="    color: #73c561;
+            font-size: 17px;
+            font-weight: bold;cursor: grab;">
+              <i class="fas fa-map-marker-alt" style="    color: #73c561;font-size: 26px;"> </i> Me géolocaliser</a>
+            <div *ngIf="latitude && longitude">
+              <p>Latitude: {{ latitude }}</p>
+              <p>Longitude: {{ longitude }}</p>
+              <p>Ville: {{ villeSource }}</p>
+              <p>Adresse: {{ adresseDetaillee }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="300">
+            <!-- geolocation.component.html -->
+            <h5>Expédition</h5>
+            <div class="f-5">    
+           <div class="form-group">
+                <label for="villeSource">Ville source</label>
+                <select class="form-select" aria-label="Default select example" id="villeSource" name="villeSource"  [(ngModel)]="villeSource" (change)="onVilleSourceChange()" >
+                  <option *ngFor="let city of villes" [value]="city">{{ city }}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="quartierSource">Quartier source</label>
+                <select class="form-select" id="quartierSource" name="quartierSource" [(ngModel)]="quartierSource" [disabled]="!villeSource" (change)="onQuartierSourceChange()" required>
+                  <option *ngFor="let quartier of quartiersSource" [value]="quartier.district ">{{quartier.district}}</option>
+                </select>
+              </div>
+                <!-- Button trigger popup source -->
+            <a  href="#" data-bs-toggle="modal" data-bs-target="#SourceModal" *ngIf="quartierSource && villeSource && typeExpedition">
+              <i class="fas fa-map-marker-alt"></i>
+              Trouver un point relais
+            </a>
+            </div>
+          </div>    
+          <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="400">
+            <h5>Destination</h5>
+           
+            <div class = "f-5">
+              <div class="form-group">
+                <label for="villeDestination">Ville destination</label>
+                <select class="form-select" id="villeDestination" name="villeDestination" [(ngModel)]="villeDestination" required>
+                  <option *ngFor="let city of villes" [value]="city">{{ city }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="quartierDestination">Quartier destination</label>
+                <select class="form-select" id="quartierDestination" name="quartierDestination" [(ngModel)]="quartierDestination" [disabled]="!villeDestination" (change)="onQuartierDestinationChange()" required>
+                  <option *ngFor="let quartier of quartiersDestination" [value]="quartier">{{quartier.district}}</option>
+                </select>
+                
+              </div>
+               <!-- Button trigger popup destination -->
+            <a  href="#" data-bs-toggle="modal" data-bs-target="#destinationModal" *ngIf="quartierDestination && villeDestination && typeExpedition=='Point de relais'">
+               <i class="fas fa-map-marker-alt"></i>
+              Trouver un point relais
+            </a>
+            </div>
+           
+          </div>
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100">
+            <span style="font-weight: bold;
+            color: #68c054;"><i class="fa-solid fa-arrow-right"></i> Option d'envoi</span>
+            <br/><br/>
+              <div class="d-flex">
+                <div class="form-check mr-5 " style="margin-right: 50px;">
+                  <input type="checkbox" class="form-check-input" (change)="toggleAmountInput()" >
+                  <label class="form-check-label" for="pointRelais">Contre rembourcement: Montant à retourner</label>
+                  <input type="number" class="form-text-input" style="margin-left: 31px;
+                  border-radius: 10px;padding-left: 51px;" placeholder="Montant DHS..." *ngIf="showAmountInput" [(ngModel)]="additionalAmount">
+                </div>
+              </div>
+              <div class="d-flex">
+                <div class="form-check mr-5 " style="margin-right: 50px;">
+                  <input type="checkbox" class="form-check-input"  (change)="toggleAmountInpu2t()" >
+                  <label class="form-check-label" for="pointRelais">Assurance colis : Valeur à déclarer </label>
+                  <input type="text" class="form-text-input" style="margin-left: 31px;
+                  border-radius: 10px;padding-left: 51px;" placeholder="Montant DHS..." *ngIf="showAmountInput2">
+                </div>
+              </div>
+              
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" value="Accusé de réception SMS" required>
+              <label class="form-check-label" for="aDomicile">Accusé de réception SMS</label>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" value="Accusé de réception SMS" required>
+              <label class="form-check-label" for="aDomicile">Preuve de livraison</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-8 simulator-form" *ngIf="!showFirstRow"id="2" >
+           
+  <div class="row"><span style="font-weight: bold;
+    color: #68c054;    font-size: 21px;" *ngIf="showFirstButton"><i class="fa-solid fa-arrow-right"></i> Informations détaillées</span>
+   
+    <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="300" *ngIf="showFirstButton">
+      <!-- geolocation.component.html -->
+      <h5>Expéditeur</h5>
+      <div class="f-5">
+        <div class="form-group">
+          <label for="villeSource"></label>
+          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nom....">
+
+        </div>
+
+        <div class="form-group">
+          <label for="quartierSource"></label>
+          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Prénom....">
+
+        </div>
+        <div class="form-group">
+          <label for="quartierSource"></label>
+          <input type="phone" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Téléphone....">
+
+        </div>
+        <div class="form-group">
+          <label for="quartierSource"></label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email....">
+
+        </div>
+   
+      </div>
+    </div>    
+    <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="400" *ngIf="showFirstButton">
+      <h5>Destinataire</h5>
+     
+      <div class="f-5">
+        <div class="form-group">
+          <label for="villeSource"></label>
+          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nom....">
+
+        </div>
+
+        <div class="form-group">
+          <label for="quartierSource"></label>
+          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Prénom....">
+
+        </div>
+        <div class="form-group">
+          <label for="quartierSource"></label>
+          <input type="phone" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Téléphone....">
+
+        </div>
+        <div class="form-group">
+          <label for="quartierSource"></label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email....">
+
+        </div>
+   
+      </div>
+    </div>
+    <div class="row" style="margin-top: 30px;" *ngIf="!showFirstButton">
+     
+      <div class="col">
+        <div class="border border-success" style="    height: 46px;
+        padding: 11px;
+        width: 187px;
+        background-color: #68c054;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 68px;
+        margin-left: 90px;">Votre code d'envoi</div>
+      </div>
+      <div class="col">
+        <img src="../../../assets/barcode.jpg" alt="Girl in a jacket" width="200" height="200">
+      </div>
+    </div>
+    
+  </div>
+</div>
+      <div class="col-sm-12 col-md-4 result" data-aos="flip-left"
+      data-aos-easing="ease-out-cubic"
+      data-aos-duration="2000">
+          <h3>Vos résultats</h3>
+          <ul>
+            <li>
+              <p><i class="fas fa-store"></i>Type d'expédition : <span *ngIf="typeExpedition" class="options">{{typeExpedition}}</span></p>
+            </li>
+            <li>
+              <p><i class="fas fa-weight"></i> Poids :<span *ngIf="poids" class="options">{{poids}} KG</span> </p>
+            </li>
+            <li>
+              <p><i class="fas fa-hand-holding-usd"></i>   Tarif de l'envoi :<span *ngIf="poids && typeExpedition" class="options">{{price}} MAD</span></p>   
+            </li>
+            <li *ngIf="showAmountInput">
+  <p>
+    <i class="fas fa-hand-holding-usd"></i> Contre remboursement :
+    <span class="options">120 MAD</span>
+  </p>            </li>
+  <li *ngIf="showAmountInput">
+    <p>
+      <i class="fas fa-hand-holding-usd"></i> Assurance colis :
+      <span class="options">120 MAD</span>
+    </p>            </li>
+            <div *ngIf="selectedRelayPointSource" class="selectedSource">
+            <li style="margin-top: 5%;">
+            <h4>Point de relais de dépôt</h4>
+            <p>{{selectedRelayPointSource.nomEs}}</p>
+            <p class="adress"> <i class="fas fa-map-marker-alt"></i>{{selectedRelayPointSource.adress}}</p>
+            <!-- <h4>Horaires d'ouverture</h4> -->
+            <div *ngIf="selectedRelayPointSource.openingHoures">
+                <p class="openingHoure" *ngFor="let openingHoure of selectedRelayPointSource.openingHoures">{{openingHoure}}</p>
+            </div>
+            <div *ngIf="!selectedRelayPointSource.openingHoures">
+                <p>Indisponible</p>
+            </div>
+            </li>
+          </div>
+          <div *ngIf="selectedRelayPointdestination" class="selectedSource">
+            <li style="margin-top: 5%;">
+            <h4>Point de relais de destination</h4>
+            <p>{{selectedRelayPointdestination.nomEs}}</p>
+            <p class="adress"> <i class="fas fa-map-marker-alt"></i>{{selectedRelayPointdestination.adress}}</p>
+            <!-- <h4>Horaires d'ouverture</h4> -->
+            <div *ngIf="selectedRelayPointdestination.openingHoures">
+                <p class="openingHoure" *ngFor="let openingHoure of selectedRelayPointdestination.openingHoures">{{openingHoure}}</p>
+            </div>
+            <div *ngIf="!selectedRelayPointdestination.openingHoures">
+                <p>Indisponible</p>
+            </div>
+            </li>
+          </div>
+        </ul>
+        </div>
+       
+
+    </div>
+
+               <button type="submit" class="btn btn-primary" (click)="toggleRows()" *ngIf="showFirstRow"  style="border: none;
+               border-radius: 9%;
+               width: 160px;">Continuer</button>
+               <div *ngIf="!showFirstRow" >
+                <!-- Button to generate a random 10-digit barcode -->
+                <button type="submit" class="btn btn-primary" style="background-color: #104533;
+    color: #6cbf44;border: none;" *ngIf="showFirstButton" (click)="toggleVisibility()">Récuperer mon code d'envoi</button>
+              </div>
+              <div *ngIf="!showFirstRow" >
+                <!-- Button to generate a random 10-digit barcode -->
+                <button type="submit" class="btn btn-primary" style="background-color: #104533;
+    color: #6cbf44;border: none;" *ngIf="!showFirstButton">Télécharger mon code <i class="fa-solid fa-cloud-arrow-down"></i></button>
+              </div>
+              
+            
+      </form>
+     
+        <!-- end simulator form -->
+  </div>
+         
+
+
+<!-- Pop up destination  -->
+<div class="modal fade map-centent" id="destinationModal" tabindex="-1" aria-labelledby="destinationModal" aria-hidden="true">
+  <div class="modal-dialog test">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="destinationModal">Point de relais destination</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Include the modal-content component -->
+        <app-popup-map ></app-popup-map>
+      </div>
+      <div class="modal-footer">  
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+        <button type="button" class="btn" data-bs-dismiss="modal">Valider mon choix</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Pop up source  -->
+<div class="modal fade  map-centent" id="SourceModal" tabindex="-1" aria-labelledby="SourceModal" aria-hidden="true">
+  <div class="modal-dialog test">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="SourceModal">Trouvez un point de relais de dépôt</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Include the modal-content component -->
+        <iframe
+        width="600"
+        height="450"
+        frameborder="0" style="border:0"
+        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA2FrsBMv3-BFiBwAdr3wVR7FgI8YbICT8&q=LOCATION">
+    </iframe>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-bs-dismiss="modal">Valider mon choix</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          

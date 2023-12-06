@@ -1,0 +1,46 @@
+<div class="cards">
+        <div class="container icon-boxes">
+          <div class="row d-flex justify-content-center"> 
+            <div class="box col-md-4 col-sm-12 col-xl-4 col-lg-4 d-flex align-items-stretch" >
+              <div class="icon-box mt-4 mt-xl-0" data-aos="zoom-in-up">
+                <i class="fa-solid fa-location-dot"></i>
+                <h4 class="t-2">Trouver un point relais</h4>
+                <div class = "required input-box">
+                  <input type="text" placeholder="L'adresse(ville/quartier)" class="input-text" [(ngModel)]="adress">
+                </div>
+               <a  href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#destinationModal" (click)="addAdress(adress)">
+                Rechercher
+                </a>
+              </div>
+              
+            </div>
+            <div class="box col-md-4  col-xl-4 col-lg-4 col-sm-12 d-flex align-items-stretch" >
+              <div class="icon-box mt-4 mt-xl-0" data-aos="zoom-in-up">
+                <i class="fas fa-road"></i>
+                <h4 class="c-2">Suivre un colis</h4>
+                <p>xxxxxxxx</p>
+                <div class = "required input-box">
+                  <input type="text" placeholder="Le numéro de votre colis" class="input-text">
+                </div>
+                <a  class="btn btn-primary">Suivre</a>
+              </div>
+            </div>
+            <div class="box col-md-4 col-sm-12 col-xl-4  col-lg-4 d-flex align-items-stretch  ">
+              <div class="icon-box mt-4 mt-xl-0" data-aos="zoom-in-up">
+                <i class="fas fa-paper-plane"></i>
+                <h4 class="c-2">Envoyer un colis</h4>
+                <p>xxxxxxx</p>
+                <div class = "required input-box">
+                 <!--<input type="number" min="0" placeholder="Poids de votre colis(kg)" [(ngModel)]="weight" class="input-text">-->
+                 <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="selectedDestination">
+                  <option [class.small-text]="isSmallText"><b>Maroc</b></option>
+                  <option [class.small-text]="isSmallText"><b>Etranger</b></option>
+                </select> 
+                </div>
+                <a  r class="btn btn-primary" (click)="sendLocated()">Envoyer</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+

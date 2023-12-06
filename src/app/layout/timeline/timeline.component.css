@@ -1,0 +1,85 @@
+.timelines{
+    height: 100vh;
+}
+.f-4 {
+    font-size: 100px;
+    margin-top: 8%;
+    margin-bottom: 6%;
+    color: var(--yellow) !important;
+    animation-name: example;
+    animation-duration: 3s;
+    animation-timing-function: ease-in;
+  /* animation-delay: 2s; */
+    animation-iteration-count: infinite;
+    /* animation-direction: alternate; */
+}
+
+@keyframes example {
+    0%   {  margin-left: -40%; }
+    100% {margin-left:40% ;  }
+
+    
+    
+  }
+
+.timeline-steps {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.timeline-steps .timeline-step {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 1rem
+}
+
+@media (min-width:768px) {
+    .timeline-steps .timeline-step:not(:last-child):after {
+        content: "";
+        display: block;
+        border-top: .25rem dotted lightgray;
+        width: 3.46rem;
+        position: absolute;
+        left: 7.5rem;
+        top: .3125rem
+    }
+    .timeline-steps .timeline-step:not(:first-child):before {
+        content: "";
+        display: block;
+        border-top: .25rem dotted var(--green);
+        width: 3.8125rem;
+        position: absolute;
+        right: 7.5rem;
+        top: .3125rem
+    }
+}
+
+.timeline-steps .timeline-content {
+    width: 10rem;
+    text-align: center
+}
+
+.timeline-steps .timeline-content .inner-circle {
+    border-radius: 1.5rem;
+    height: 1rem;
+    width: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--yellow);
+    z-index: 29 !important;
+}
+
+.timeline-steps .timeline-content .inner-circle:before {
+    content: "";
+    background-color: rgb(226, 213, 213);
+    display: inline-block;
+    height: 3rem;
+    width: 3rem;
+    min-width: 3rem;
+    border-radius: 6.25rem;
+    opacity: 0.2
+}

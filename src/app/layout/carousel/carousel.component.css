@@ -1,0 +1,51 @@
+/*--------------------------------------------------------------
+# Hero Section
+--------------------------------------------------------------*/
+
+.inside_hero{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.test{
+  max-width: 900px !important  ;
+}
+
+.bg-cards{
+  background-image: url(/assets/hero-bg.png);
+  background-size: cover;
+}
+
+.bg-carousel{
+  background-image: url(/assets/2.png);
+}
+
+
+.carousel-item{
+  width: 65%;
+  margin-left: 18%;
+}
+.carousel-item img{
+  border-radius: 10px;
+  border: 50px solid var(--dark_green);
+  
+}
+
+
+.carousel-item h5{
+  font-weight: bold;
+  opacity: 0.7;
+}
+
+@media only screen and (max-width: 768px) {
+  .carousel-item img{
+    border : none;
+  }
+  .bg-carousel{
+    background-color: white;
+  }
+  .bg-cards{
+    background-image: none;
+
+  }
+}

@@ -1,0 +1,7 @@
+<google-map height="400px" [center]="center" [zoom]="zoom">
+    <map-marker *ngFor="let relayPoint of relayPoints"
+                [options]="markerOptions"
+                (mapClick)="onMarkerClick(relayPoint)"></map-marker>
+  </google-map>
+  
+  

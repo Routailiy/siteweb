@@ -1,0 +1,40 @@
+/* /*--------------------------------------------------------------
+# Featured Services
+--------------------------------------------------------------*/ 
+
+.featured-services h2{
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+  .featured-services .icon-box {
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+   }
+  
+  .featured-services .icon {
+    margin-bottom: 15px;
+  }
+  
+  .featured-services .icon i {
+    font-size: 48px;
+    line-height: 1;
+    color: var(--grey);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .featured-services .title {
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color : var(--green);
+
+  }
+  
+  .featured-services .description {
+    font-size: 15px;
+    line-height: 28px;
+    margin-bottom: 0px;
+  }
+  

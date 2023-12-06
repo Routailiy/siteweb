@@ -1,0 +1,26 @@
+
+.adress i{
+    color: red !important;
+    font-size: large !important;
+    padding: 3%;
+  }
+  .openingHoure{
+    font-style: italic;
+    font-size: 12px !important;
+    margin-top:0% !important;
+    margin-bottom: 0% !important;
+  }
+  .selectedSource p{
+    font-size: 15px !important;
+    margin-top: 0% !important;
+    margin-bottom:  0% !important;
+
+  }
+  li{
+    list-style-type: none;
+  }
+
+  .btn{
+    background-color: rgb(251,226,84, 1);
+    color: var(--green);
+  }

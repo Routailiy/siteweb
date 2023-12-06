@@ -1,0 +1,114 @@
+/*--------------------------------------------------------------
+# services
+--------------------------------------------------------------*/
+.services .box {
+  padding: 20px;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 8%;
+  height: 100%;
+}
+.inner-service{
+  height:70%;
+}
+
+.services h2{
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  position: relative;
+  color: var(--green);
+  font-weight: bolder;
+  font-size : xx-large;
+}
+.services h3 {
+  font-weight: 400;
+  margin: -20px -20px 20px -20px;
+  padding: 20px 15px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #777777;
+  background: #f8f8f8;
+}
+
+.services h4 {
+  font-size: 36px;
+  color: var(--green);
+  font-weight: 600;
+  font-family: "Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif;
+  margin-bottom: 20px;
+}
+
+.services h4 sup {
+  font-size: 20px;
+  top: -15px;
+  left: -3px;
+}
+
+.services h4 span {
+  color: #bababa;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.services ul {
+  padding: 0;
+  list-style: none;
+  color: #444444;
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+}
+
+.services ul li {
+  padding-bottom: 16px;
+}
+
+.services ul i {
+  color: var(--green);
+  font-size: 18px;
+  padding-right: 4px;
+}
+
+.services ul .na {
+  color: #ccc;
+  text-decoration: line-through;
+}
+
+.services .btn-wrap {
+  margin: 20px -20px -20px -20px;
+  padding: 20px 15px;
+  background: #f8f8f8;
+  text-align: center;
+}
+
+.services .btn-buy {
+  background: var(--green);
+  display: inline-block;
+  padding: 8px 35px 10px 35px;
+  border-radius: 50px;
+  color: #fff;
+  transition: none;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: "Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.services .btn-buy:hover {
+  background: var(--dark_green);
+}
+
+.services .featured h3 {
+  color: #fff;
+  background: var(--green);
+}
+
+
+

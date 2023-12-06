@@ -1,0 +1,174 @@
+/*--------------------------------------------------------------
+# cards 
+--------------------------------------------------------------*/
+@media only screen and (max-width: 768px) {
+    .cards {
+      position: relative;
+      top: 5%;
+      margin-bottom: 50%;
+      display: flex;
+      flex-direction: column;
+      /* width: 100% !important;
+      height: 100% !important; */
+    }
+  }
+
+  @media only screen and (min-width: 1300px) {
+  
+   
+  }
+
+  h5{
+    color:var(--grey);
+    padding: 20px;
+    border-bottom:  solid 2px  var(--green);
+  }
+  .small-text {
+    font-size: 12px; /* Ajustez la taille de police selon vos besoins */
+  }
+  
+.cards {
+    margin-bottom: 0%;
+    width: 100%;
+    height: 100%;
+    /* height: 300px;
+    width: 400px; FOR ONE CARD*/
+    align-items: center;
+  }
+
+  .cards .icon-boxes .icon-box .btn-primary{
+    align-items: center;
+    justify-content: center;
+    appearance: button;
+    background-color: var(--green);
+    border-radius: 8px;
+    border-style: none;
+    box-shadow: rgba(255, 255, 255, 0.26) 0 1px 2px inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    font-family: "Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif;
+    font-size: 100%;
+    font-weight: bold;
+    line-height: 1;
+    margin-top: 10px;
+    padding: 7px 15px;
+    text-align: center;
+    text-transform: none;
+    transition: color .13s ease-in-out,background .13s ease-in-out,opacity .13s ease-in-out,box-shadow .13s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+
+
+  
+  .cards .icon-boxes .icon-box .btn-primary:active {
+    background-color: var(--green);
+  }
+  
+  .cards .icon-boxes .icon-box .btn-primary:hover {
+    background-color: grey;
+  }
+  
+  
+  .cards .content {
+    padding: 30px;
+    background:var(--green);
+    border-radius: 4px;
+    color: #fff;
+    margin-top: 7px;
+    margin-left: 7px;
+    margin-right: 7px;
+  }
+  
+  .cards .content h3 {
+    font-weight: 700;
+    font-size: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .cards .content p {
+    margin-bottom: 20px;
+  }
+  
+  .cards .content .more-btn {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 20px 8px 20px;
+    color: #fff;
+    border-radius: 50px;
+    transition: all ease-in-out 0.4s;
+  }
+  
+  .cards .content .more-btn i {
+    font-size: 10px;
+  }
+  
+  .cards .content .more-btn:hover {
+    color: var(--green);
+    background: #fff;
+  }
+  
+  .cards .icon-boxes .icon-box {
+    text-align: center;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 20px;
+    width: 100%;
+    margin-top: auto;
+
+  }
+  
+  .cards .icon-boxes .icon-box i {
+    font-size: 20px;
+    color: var(--green);
+    margin-bottom: 20px;
+  }
+  
+  .cards .icon-boxes .icon-box h4 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+  }
+  
+  .cards .icon-boxes .icon-box p {
+    font-size: 15px;
+    color: #fff;
+  }
+  
+  .cards .icon-boxes .icon-box input{
+    width: 100%;
+    font-size: 10px;
+    font-family: "Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif;
+    height: 44px;
+    border: 1px solid #e2dede;
+    border-radius: 4px;
+    display: block;
+    font-family: "Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif;
+    font-weight: 400;
+    padding: 15px;
+  }
+   
+  
+  .cards .icon-boxes .icon-box a{
+    margin-top: 10px;
+    background-color: var(--green);
+    border: none;
+    width: 100%;
+    height: 44px;
+    font-size: 20px;
+  }
+  .cards .features_box {
+    width: 250px;
+  }
+  
+  
+  
+  
+  
+  

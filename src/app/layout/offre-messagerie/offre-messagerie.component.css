@@ -1,0 +1,82 @@
+/*--------------------------------------------------------------
+# Featured Services
+--------------------------------------------------------------*/
+
+.messagerie_featured_services h2{
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+@media only screen and (max-width: 768px) {
+  .messagerie_featured_services {
+    margin-top: 130%;
+    margin-bottom: 5%;
+  }
+  .messagerie_featured_services h2{
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+}
+.messagerie_featured_services .icon-box {
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    background: #e6eed6;
+    box-shadow: 0 0 29px 0 rgba(68, 88, 144, 0.12);
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+    z-index: 1;
+    text-align: center;
+  }
+  
+  .messagerie_featured_services .icon-box::before {
+    content: "";
+    position: absolute;
+    background: #cbe0fb;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 100%;
+    transition: all 0.3s;
+    z-index: -1;
+  }
+  
+  .messagerie_featured_services .icon-box:hover::before {
+    background: var(--green);
+    top: 0;
+    border-radius: 0px;
+  }
+  
+  .messagerie_featured_services  .icon {
+    margin-bottom: 15px;
+  }
+  
+  .messagerie_featured_services  .icon i {
+    font-size: 48px;
+    line-height: 1;
+    color: var(--green);
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 2%;
+  }
+  
+  .messagerie_featured_services .title {
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+  
+  
+  .messagerie_featured_services .description {
+    font-size: 15px;
+    line-height: 28px;
+    margin-bottom: 0;
+  }
+  
+  .messagerie_featured_services .icon-box:hover .title a,
+  .messagerie_featured_services .icon-box:hover .description {
+    color: #fff;
+  }
+  
+  .messagerie_featured_services .icon-box:hover .icon i {
+    color: #fff;
+  }

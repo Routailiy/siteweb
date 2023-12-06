@@ -1,0 +1,172 @@
+.map-centent {
+    height: 100%;
+    width:100%;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+ 
+  }
+  .test{
+    max-width: 900px !important  ;
+  }
+ 
+
+.main-title{
+  font-weight: bolder;
+  color: var(--green);
+  padding-bottom: 2%;
+  /* border-top: solid 2px  chocolate !important;*/
+  border-bottom: solid 3px var(--yellow) !important; 
+  margin-bottom: 5%;
+  text-align: start;
+  width: 60%;
+  /* margin-top: 20%; */  
+}
+
+@media (max-width:768px) {
+  .main-title{  margin-top: 70%; 
+    width : 100%; 
+  }
+  
+}
+.geolocate-button {
+  background-color: green; /* Couleur verte pour le fond du bouton */
+  color: white; /* Couleur du texte */
+  padding: 10px 20px; /* Espacement intérieur du bouton */
+  border: none; /* Supprime la bordure par défaut */
+  cursor: pointer; /* Curseur pointeur au survol */
+  border-radius: 5px; /* Coins arrondis */
+}
+.f-4{
+  font-size: 80px;
+  color : var(--yellow);
+  margin-right: 25px;
+}
+  .f-5{
+
+    padding :20px;
+    margin-bottom: 4%;
+    width : 100%;
+    border-radius: 10px;
+    /* margin-top: 4%; */
+    box-shadow: rgba(110,188 , 76, 0.4) -5px 5px, rgba(110, 188, 76, 0.3) -10px 10px, rgba(110, 188, 76, 0.2) -15px 15px, rgba(110, 188, 76, 0.1) -20px 20px, rgba(110, 188, 76, 0.05) -25px 25px;
+    /* box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
+
+  }
+  .title{
+    color: var(--green);
+    font-size: xx-large;
+    font-weight: bolder;
+  }
+  input {
+    background-color: #fff;
+    border: var(--green) solid 2px;
+  }
+  input:focus {
+    /* background-color: var(--green); */
+  }
+  label{
+    font-size: medium;
+    font-weight: 400;
+    margin-bottom:10px ;
+  }
+ h5{
+  color:var(--grey);
+  padding: 20px;
+  border-bottom:  solid 2px  var(--green);
+}
+  .result{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border-radius: 10px;
+
+    /* background-image:linear-gradient(109.6deg, var(--green) 11.2%, var(--dark_green) 91.1%); */
+    /* background-image: linear-gradient(to bottom, rgba(110,188 , 76, 1) , rgba(110, 188, 76, 0.5) , rgba(110, 188, 76, 0.3) , rgba(110, 188, 76, 0.1) , rgba(110, 188, 76, 0.2)); */
+    background-image: linear-gradient(to bottom, rgb(251,226,84, 1) , rgb(251,226,84, 0.5) , rgb(251,226,84, 0.3) , rgb(251,226,84, 0.1) , rgb(251,226,84, 0.2));
+    padding-top: 2%;
+  }
+  .result h3{
+    color: var(--green);
+    font-weight: bold;
+    padding: 2%;
+    padding-bottom:5% ;
+    text-align: center;
+   }
+   .result p {
+    font-size: medium;
+    font-weight: 600;
+    color:var(--grey);
+   }
+   .result p i{
+    font-size: xx-large;
+    color: var(--green);
+    padding-right: 4%;
+   }
+  li {
+    list-style: none;
+    float: left;
+    display: block;
+    width: 100%;
+    text-align: left;
+    color: #000;
+    font-weight: bolder;
+    font-size: 1.5rem;
+    padding: 5px 0;
+    margin-top: 15
+  }
+  .options{
+    color: red;
+    /* text-transform: uppercase; */
+    font-size: medium;
+    font-weight: 600;
+    /* background-color: var(--white); */
+    /* border-radius: 3px;
+    padding: 5px 8px; */
+  }
+  .simulator-form{
+    padding: 2%;
+/* background-color: var(--green); */
+  }
+  a{
+    color:  var(--yellow);
+    font-size: medium;
+    font-weight: 500;
+   margin-top: 4% !important;
+
+  }
+ 
+  h4{
+    color:  var(--green);
+    font-weight:600 ;
+    /* margin-left: 9%; */
+  }
+  a:hover{
+    color: var(--grey);
+  }
+  a i{
+    color: red;
+    font-size: large;
+    padding: 3%;
+  }
+  .adress i{
+    color: red !important;
+    font-size: large !important;
+    padding: 3%;
+  }
+  .openingHoure{
+    font-style: italic;
+    font-size: 12px !important;
+    margin-top:0% !important;
+    margin-bottom: 0% !important;
+  }
+  .selectedSource p{
+    font-size: 15px !important;
+    margin-top: 0% !important;
+    margin-bottom:  0% !important;
+
+  }
+    .btn{
+    background-color: var(--green);
+    color: white;
+  }
+ 

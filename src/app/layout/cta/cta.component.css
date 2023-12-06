@@ -1,0 +1,56 @@
+/*--------------------------------------------------------------
+# Cta
+--------------------------------------------------------------*/
+.cta {
+    background: var(--green);
+    padding: 80px 0;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin-top: 8%;
+  }
+
+  .cta h3 {
+    color: #fff;
+    font-size: 40px;
+    font-weight: 700;
+  }
+  
+  .cta p {
+    color: #fff;
+    text-align: left;
+  }
+  
+  .cta .cta-btn {
+    font-family: "Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif;
+    font-weight: 600;
+    font-size: 25px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 2px;
+    transition: 0.5s;
+    margin: 10px;
+    border: 2px solid #fff;
+    color: var(--green);
+    border-radius: 4px;
+    background-color: #fff;
+  }
+  
+  .cta .cta-btn:hover {
+    background: var(--green);
+    color: #fff;
+  }
+  
+  @media (max-width: 1024px) {
+    .cta {
+      background-attachment: scroll;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .cta .cta-btn-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }

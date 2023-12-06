@@ -1,0 +1,65 @@
+/*--------------------------------------------------------------
+# Featured Services Section
+--------------------------------------------------------------*/
+
+
+.featured-services .service-item {
+    position: relative;
+    height: 100%;
+  }
+  
+  .featured-services .service-item .icon {
+    margin-right: 20px;
+  }
+  
+  .featured-services .service-item .icon i {
+    color: var(--green);
+    font-size: 48px;
+    transition: 0.3s;
+  }
+  
+  .featured-services .service-item:hover .icon {
+    background: #fff;
+  }
+  
+  .featured-services .service-item:hover .icon i {
+    color: var(--green);
+  }
+  
+  .featured-services .service-item .title {
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: var(--dark-green);
+    transition: 0.3s;
+  }
+  
+  .featured-services .service-item .description {
+    font-size: 15px;
+    color: rgb(77, 77, 77);
+    margin-bottom: 10px;
+  }
+  
+  .featured-services .service-item .readmore {
+    display: flex;
+    align-items: center;
+    color: var(--dark-green);
+    transition: 0.3s;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  
+  .featured-services .service-item .readmore i {
+    margin-left: 8px;
+  }
+  
+  
+  .featured-services .service-item:hover .icon i {
+    color: rgb(77, 77, 77);
+  }
+
+  .featured-services .service-item:hover .title,
+  .featured-services .service-item:hover .readmore {
+    color: #6EBC4C;
+  }
+  

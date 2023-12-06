@@ -1,0 +1,74 @@
+<header id="header" class="">
+  <div class="container-fluid align-items-center justify-content-lg-between">
+    <nav class="navbar navbar-expand-lg">
+      <a href="index.html" class="navbar-brand logo me-auto me-lg-0">
+        <img src="../../../assets/logo.png" alt="logo" class="img-fluid" />
+      </a>
+      <button
+        class="mobile-nav-toggle navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link scrollto" routerLink="/about" routerLinkActive="active" >Qui sommes nous ?</a>
+          </li>
+          <li class="nav-item dropdown" routerLinkActive="dropdown_active" [routerLinkActiveOptions]="{exact: true}" >
+            <!-- <a href="#services">
+              <span>Nos offres</span> <i class="bi bi-chevron-down"></i>
+            </a> -->
+            <!-- <ul>
+              <li class="dropdown"> -->
+                <a href="#messagerie_featured_services" class="parentLink">
+                  <span>Messagerie</span> <i class="bi bi-chevron-down"></i>
+                </a>
+                <ul>
+                  <li><a routerLink="/messagerie_details">Offre entreprise</a></li>
+                  <li><a routerLink="/messagerie_ecom_details">Offre e-commerce</a></li>
+                  <li><a routerLink="/messagerie_part_details">Offre particulier</a></li>
+                </ul>
+          </li>
+          <li class="nav-item dropdown " routerLinkActive="dropdown_active" [routerLinkActiveOptions]="{exact: true}"    >
+              <!-- </li> -->
+              <!-- <li class="dropdown"> -->
+                <a class="parentLink" href="#logistic_services">
+                  <span>Logistique</span> <i class="bi bi-chevron-down"></i>
+                </a>
+                <ul> 
+                  <li><a routerLink="/logistique_details" >Offre entreprise</a></li>
+                  <li><a routerLink="/logistique_ecom_details" >Offre e-commerce</a></li>
+                </ul>
+              <!-- </li> -->
+            <!-- </ul> -->
+          </li>
+          <li class="nav-item" >
+            <a class="nav-link scrollto" routerLink="/simulateur" routerLinkActive="active">Envoi en ligne</a>
+          </li>
+          <li class="nav-item get-started-btn">
+            <a class="nav-link scrollto"href="https://www.sapresslogistics.ma/web/login?">Espace pro</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link scrollto " href="https://support.sapresslogistics.ma/hc/fr" target="_blank">
+              <i class="bi bi-question-square-fill custom-icon"></i>FAQ</a>
+          </li>
+            <li class="nav-item">
+              <a class="nav-link scrollto" href="https://support.sapresslogistics.ma/hc/fr/requests/new" target="_blank">
+                <i class="bi bi-person-lines-fill custom-icon"></i>
+                Contactez nous
+              </a>
+            </li>
+        </ul>
+      </div>
+    </nav>      
+  </div>
+</header><!-- End Header -->
+

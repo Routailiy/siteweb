@@ -1,0 +1,24 @@
+
+<div class="container justify-content-center">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 center" [ngClass]="order" >
+            <h1 class="btn-get-started" [style.backgroundColor]="titles_color">{{title}}</h1>
+            <ul class="service_details">
+                <li *ngFor="let service_detail of service_details"><i class="bi bi-check2-circle"></i>
+                        {{service_detail}}
+                </li>
+            </ul>
+            <h1 *ngIf="second" class="btn-get-started" [style.backgroundColor]="titles_color">{{title_second}}</h1>
+            <ul class="service_details">
+                <li *ngFor="let service_detail of service_details_second"><i class="bi bi-check2-circle"></i>
+                        {{service_detail}}
+                        </li>
+            </ul>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-center" >
+            <a href="https://www.sapresslogistics.ma/">           
+                 <img class="img_style" [src]="service_img">
+            </a>
+        </div>
+    </div>
+</div>

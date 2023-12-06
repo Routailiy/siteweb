@@ -1,0 +1,39 @@
+.btn-get-started {
+    font-family: "Avantgarde", "Avant Garde Gothic", "Century Gothic", sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 10px 28px 11px 28px;
+    border-radius: 50px;
+    transition: 0.5s;
+    margin: 100px 0 20px 0;
+    color: #fff;
+    text-align: center;
+    width: 100%;
+}
+.center{
+   display: flex;
+   flex-direction: column;
+   justify-content:center;
+}
+
+.center h1 {
+    margin-top: 20px;
+}
+
+.img_style{
+    width:85%;
+    margin: 20px 0 0px 0;
+    border-radius: 5%;
+}
+
+.service_details li {
+    font-size: large;
+    text-align:justify;
+    list-style: none;
+}
+
+.service_details li i{
+    color : var(--green);
+}

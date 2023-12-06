@@ -1,0 +1,37 @@
+<div class="">
+  <div class="row">
+    <div  class="container col-md-5 col-lg-5 col-sm-5 overflow-auto px-5" style="height: 400px;">
+      <div *ngFor="let closePoint of closePoints" class="border p-3">
+         <div class="selectedSource">
+     
+                <li style="margin-top: 5%;">
+                <h4>{{closePoint.nomEs}}</h4>
+                <p class="adress"> <i class="fas fa-map-marker-alt"></i>{{closePoint.adress}}</p>
+                <!-- <h4>Horaires d'ouverture</h4> -->
+                <div *ngIf="closePoint.openingHoures">
+                    <p class="openingHoure" *ngFor="let openingHoure of closePoint.openingHoures">{{openingHoure}}</p>
+                </div>
+                <div *ngIf="!closePoint.openingHoures">
+                    <p>Horaires indisponibles</p>
+                </div>
+                </li>
+              </div>
+        <button *ngIf="!fromHomePage" class="btn"  data-bs-dismiss="modal" (click)="selectRelayPoint(closePoint)">Séléctioner</button>
+        </div>
+    </div> 
+    <div class="col-md-7 col-lg-7 col-sm-7">
+      <google-map   height="400px" width="100%"
+      [center]="center"
+      [zoom]="zoom"
+      [options]="markerOptions"
+    >
+    <map-marker  data-bs-dismiss="modal" *ngFor="let relayPoint of closePoints"
+        [position]="relayPoint.position"
+        [options]="markerOptions"
+        (mapClick)="selectRelayPoint(relayPoint)" data-bs-toggle="tooltip" data-bs-placement="top" [title]=relayPoint.nomEs ></map-marker>
+    </google-map>
+  </div>
+  
+  </div>
+</div>
+  
