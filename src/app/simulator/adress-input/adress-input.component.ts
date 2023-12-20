@@ -1,20 +1,23 @@
-import { Component, ViewChild, AfterViewInit, ElementRef, NgModule } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ElementRef, NgModule, ChangeDetectorRef } from '@angular/core';
 import { CityService } from '../../services/city.service';
 import { CityModel } from 'src/app/Model/cityModel';
-import { PopupMapComponent } from '../popup-map/popup-map.component';
 import { RelayPoint } from 'src/app/Model/RelayPointModel';
 import { RelayPointService } from '../../services/relay-point.service';
-import { relayPointInfo } from '../../Model/relayPointInfo';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import * as JsBarcode from 'jsbarcode';
-import { BarcodeGeneratorAllModule,QRCodeGeneratorAllModule,DataMatrixGeneratorAllModule } from '@syncfusion/ej2-angular-barcode-generator';
-import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { GoogleMap } from '@angular/google-maps';
+import { DataService } from './data-service';
+import { Data } from './data.model';
 
 
 
 
+
+
+
+declare var google: any;
 
 interface AddressComponent {
   long_name: string;
@@ -29,15 +32,31 @@ interface AddressComponent {
   
 })
 
- 
+
 
 export class AdressInputComponent  {
+  relayPoints: Data[] = []; // Utiliser le type Data
+  zoom = 14;
+  center!: google.maps.LatLngLiteral;
+  selectedRelayPointSource: Data | null = null;
+  selectedRelayPointSource2: Data | null = null;
+  pointsOfSale: any[] = []; // Votre tableau de points de vente
+  markers: { position: google.maps.LatLngLiteral, options?: google.maps.MarkerOptions,  code_es: number, agence: string, Adresse: string,  distance?: string }[] = [];
   latitude!: number ;
+  data: Data[] = [];  
   longitude!: number ;  
   typeExpedition!: string;
   poids!: number;
   adresse!: string;
+  expediteur_name!: string;
+  expediteur_prenom!:string;
   adresseDetaillee!: string;
+  expediteur_phone!:number;
+  expediteur_email!: string;
+  destinataire_name!: string;
+  destinataire_prenom!: string;
+  destinataire_phone!:number;
+  destinataire_email!:string;
   quartier!: string;
   villeSource!:string;
   villeDestination!: string;
@@ -46,10 +65,8 @@ export class AdressInputComponent  {
   quartiersSource: CityModel[]=[];
   quartierSource : string="";
   villes: string[] = [];
-  relayPoints: RelayPoint[]= [];
   adressSource :string="";
   adressDestination :string="";
-  selectedRelayPointSource!:RelayPoint;
   selectedRelayPointdestination!:RelayPoint;
   price!: number;
   formulaire!:FormGroup;
@@ -59,40 +76,193 @@ export class AdressInputComponent  {
   cities: string[] = [];
   selectedCity: string = '';
   additionalAmount !:number;
+  AssuranceAmount !:number;
   @ViewChild('dayOfTheYear') dayOfTheYear!: ElementRef;
-  constructor(private route: ActivatedRoute,private cityService: CityService,private relayPointService: RelayPointService, private http: HttpClient) {}
+  @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
+  @ViewChild('barcode') barcodeElement!: ElementRef;
+
+  mapOptions: google.maps.MapOptions = {
+    center: { lat: 33.5731, lng: -7.5898 },
+    zoom: 6 
+  };
+  markerPosition!: google.maps.LatLngLiteral;
+  markerOptions: google.maps.MarkerOptions = { draggable: false }; // Customize as needed
+  monFormulaire!: FormGroup;
+
+  mapUrl!: string;
+  constructor(private route: ActivatedRoute,private cityService: CityService,private relayPointService: RelayPointService, private http: HttpClient,private dataService: DataService,private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
      this.poids=params['weight'];
       // Use the value of `id` as needed in your component
     });
-    this.relayPointService.getRelayPoints().subscribe((results :RelayPoint[])=>{
-      results.forEach( (relayPoint : RelayPoint) => {
-        relayPoint.position =  {lat:relayPoint.latitude, lng: relayPoint.longitude };
-        this.relayPoints.push(relayPoint);
-      })
+    this.dataService.getData().subscribe(data => {
+      this.pointsOfSale = data;
     });
-    this.getVilles(); 
+  
 
+    this.dataService.getData().subscribe(data => {
+      this.data = data;
+    });
   }
+  generateBarcode(): void {
+    const randomNumber = this.generateRandomNumber();
+    JsBarcode(this.barcodeElement.nativeElement, randomNumber, {
+      format: "CODE128",
+      lineColor: "#000",
+      width: 2,
+      height: 40,
+      displayValue: true
+    });
+  }
+  
+
+  generateRandomNumber(): string {
+    let randomNumber = '';
+    for (let i = 0; i < 10; i++) {
+      randomNumber += Math.floor(Math.random() * 10).toString();
+    }
+    return randomNumber;
+  }
+  getTravelTime(origin: google.maps.LatLngLiteral, destination: google.maps.LatLngLiteral, travelMode: google.maps.TravelMode): Promise<any> {
+    const directionsService = new google.maps.DirectionsService();
+  
+    return directionsService.route({
+      origin: origin,
+      destination: { lat: destination.lat, lng: destination.lng },
+      travelMode: travelMode,
+    }).then((response: { routes: { legs: { duration: any; }[]; }[]; }) => {
+      const duration = response.routes[0].legs[0].duration;
+      return duration.text; // Ou toute autre information dont vous avez besoin
+    }).catch((error: any) => {
+      console.error('Error with Directions API: ', error);
+      return null;
+    });
+  }
+  
+  
+
+  onSelectRelayPoint(marker: any): void {
+    this.selectedRelayPointSource = marker;
+  
+    // Calculer le temps de trajet à pied
+    this.getTravelTime({lat: this.latitude, lng: this.longitude}, marker.position, google.maps.TravelMode.WALKING)
+      .then(walkingTime => {
+        if (this.selectedRelayPointSource) {
+          this.selectedRelayPointSource.walkingTime = walkingTime;
+        }
+      });
+  
+    // Calculer le temps de trajet en voiture
+    this.getTravelTime({lat: this.latitude, lng: this.longitude}, marker.position, google.maps.TravelMode.DRIVING)
+      .then(drivingTime => {
+        if (this.selectedRelayPointSource) {
+          this.selectedRelayPointSource.drivingTime = drivingTime;
+        }
+      });
+  }
+  
+  onSelectRelayPoint2(marker2: any): void {
+    this.selectedRelayPointSource2 = marker2;
+    
+  }
+  geocodeByStreet(quartier:any,ville:any) {
+    const address = `${ville}, ${quartier}`;
+    const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyBqimHieAKQubjYTPyEiVhMx56kLMMQbeE`;
+    this.http.get<any>(geocodingApiUrl).subscribe(data => {
+      if (data.status === 'OK') {
+        const location = data.results[0].geometry.location;
+        this.updateMap(location.lat, location.lng);
+        this.displayNearbyPointsOfSale(location); 
+      } else {
+        console.error('Geocoding failed:', data.status);
+      }
+    }, err => {
+      console.error('Error calling the geocoding API:', err);
+    });
+  }
+    
+
+  
+  updateMap(latitude: number, longitude: number) {
+    this.mapOptions.center = { lat: latitude, lng: longitude };
+    this.markerPosition = { lat: latitude, lng: longitude };
+    this.changeDetectorRef.detectChanges();
+  }
+  displayNearbyPointsOfSale(userLocation: google.maps.LatLngLiteral) {
+    this.dataService.getData().subscribe(dataPoints => {
+      this.markers = dataPoints
+        .filter(point => this.isWithinDistance(
+          userLocation,
+          { lat: parseFloat(point.latitude), lng: parseFloat(point.longitude) },
+          5 
+        ))
+        .map(point => {
+          const distance = this.calculateDistance(
+            userLocation.lat, userLocation.lng,
+            parseFloat(point.latitude), parseFloat(point.longitude)
+          );
+          return {
+            position: {
+              lat: parseFloat(point.latitude),
+              lng: parseFloat(point.longitude)
+            },
+            code_es: point.code_es,   
+            agence: point.agence,     
+            Adresse: point.Adresse,
+            distance: distance.toFixed(2) 
+          };
+        })
+        .sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance)); 
+    });
+  }
+  
+  
+  isWithinDistance(point1: google.maps.LatLngLiteral, point2: google.maps.LatLngLiteral, maxDistanceKm: number): boolean {
+    const earthRadiusKm = 6371;
+  
+    const dLat = this.degreesToRadians(point2.lat - point1.lat);
+    const dLon = this.degreesToRadians(point2.lng - point1.lng);
+  
+    const lat1 = this.degreesToRadians(point1.lat);
+    const lat2 = this.degreesToRadians(point2.lat);
+  
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    const distance = earthRadiusKm * c;
+  
+    return distance <= maxDistanceKm;
+  }
+  
+  degreesToRadians(degrees: number): number {
+    return degrees * Math.PI / 180;
+  }
+  calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const earthRadiusKm = 6371;
+    const dLat = this.degreesToRadians(lat2 - lat1);
+    const dLon = this.degreesToRadians(lon2 - lon1);
+  
+    lat1 = this.degreesToRadians(lat1);
+    lat2 = this.degreesToRadians(lat2);
+  
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2); 
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+    return earthRadiusKm * c;
+  }
+  
   showFirstButton: boolean = true;
 
-  toggleVisibility() {
-    this.showFirstButton = !this.showFirstButton;
-  }
-  handleAddressChange(address: any) {
-    // Extract the city from the address object
-    const city = address.formatted_address;
-  
-    // Do something with the selected city (e.g., store it in a variable)
-    this.villeDestination = city;
-  
-    // You can also log the full address details for debugging
-    console.log(address);
-  }
+  toggleVisibility(formulaire: NgForm) {
+      if (formulaire.valid) {
+        this.showFirstButton = !this.showFirstButton;
+        this.generateBarcode()
 
-    
+      }
+    console.log("testbarcodeeeeeeeeeeee")
+  }  
   getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -112,12 +282,9 @@ export class AdressInputComponent  {
       console.error('La géolocalisation n\'est pas prise en charge par votre navigateur.');
     }
   }
-  
-  
-
 
   getCityFromCoordinates() {
-    const apiKey = 'AIzaSyA2FrsBMv3-BFiBwAdr3wVR7FgI8YbICT8';
+    const apiKey = 'AIzaSyAqlub2XWpn7MwqlN-gT1rAmyClo3YOJS4';
     const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.latitude},${this.longitude}&key=${apiKey}`;
 
     this.http.get(apiUrl)
@@ -148,7 +315,6 @@ export class AdressInputComponent  {
             console.error('La ville n\'a pas pu être déterminée à partir des coordonnées.');
           }
 
-          // Extraire l'adresse détaillée
           this.adresseDetaillee = data.results[0].formatted_address;
         } else {
           console.error('Aucun résultat de géocodage disponible.');
@@ -158,6 +324,7 @@ export class AdressInputComponent  {
         console.error('Erreur lors de l\'appel de l\'API de géocodage:', error);
       });
   }
+  
   ngAfterViewInit() {
     // Create your form group here
     this.formulaire = new FormGroup({
@@ -169,21 +336,13 @@ export class AdressInputComponent  {
       quartierDestination: new FormControl('')
       
     });
-
-    // Subscribe to changes in the form group
     this.formulaire.valueChanges.subscribe(value => {
       console.log(value); // Do something with the updated form values
     });
+    this.generateBarcode();
 
   }
-  getVilles(): void {
-    // Remplacez cette URL par l'URL de l'API pour récupérer la liste des villes
-     this.cityService.getAllCitiesName().subscribe( (results)=>{
-       this.villes =results;
-     }     
-     );
-    
-  }
+
 
 
    onVilleSourceChange() {
@@ -199,31 +358,17 @@ export class AdressInputComponent  {
     this.adressSource="";
     this.adressSource=this.villeSource+ this.quartierSource;
   }
-   onVilleDestinationChange() {
-    this.quartiersDestination=[];
-    this.cityService.getAlldistrictByCity(this.villeDestination).subscribe(
-      (results)=>{
-        this.quartiersDestination=results;
-      }
-    )
-  }
-  onQuartierDestinationChange(){
-    this.adressDestination="";
-    this.adressDestination=this.villeDestination + " "+this.quartierDestination;
-  }
-
- 
-  choseRelayPoint(relayPoint:RelayPoint){
-    this.selectedRelayPointSource=relayPoint;
-    
-  }
   choseRelayPointDestination(relayPoint:RelayPoint){
     this.selectedRelayPointdestination=relayPoint;
     
   }
-  onSubmit(formulaire: any): void {
-    console.log('Formulaire soumis', formulaire.value);
+  onSubmit(formulaire: NgForm) {
+    if (formulaire.valid) {
+     this.toggleRows();
+    }
   }
+  
+  
   showPrice(){
     console.log("cxvv")
     if (this.poids && this.typeExpedition ){
@@ -266,6 +411,14 @@ export class AdressInputComponent  {
 
   toggleAmountInpu2t() {
     this.showAmountInput2 = !this.showAmountInput2;
+  }
+  showAmountInput3: boolean = false;
+  toggleAmountInput3() {
+    this.showAmountInput3 = !this.showAmountInput3;
+  }
+  showAmountInput4: boolean = false;
+  toggleAmountInput4() {
+    this.showAmountInput4 = !this.showAmountInput4;
   }
 }
 

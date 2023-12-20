@@ -19,8 +19,8 @@
   li{
     list-style-type: none;
   }
-
   .btn{
     background-color: rgb(251,226,84, 1);
     color: var(--green);
   }
+  
