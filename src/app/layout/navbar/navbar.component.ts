@@ -9,6 +9,7 @@ import { RouterLinkActive } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+panier: any;
   constructor(private router: Router) {
 
    }

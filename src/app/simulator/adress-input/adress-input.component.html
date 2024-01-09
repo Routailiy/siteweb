@@ -3,54 +3,28 @@
   <div class="row">
     <div class="col-md-12">  
       <!-- Simulator form -->
-          
-          <h1 class="main-title" data-aos="fade-up"><i class="fa-solid fa-cube f-4" data-aos="zoom-in" data-aos-delay="200" data-aos-duration="500"></i>Simuler l'envoi de mon colis</h1>
-      
-      
-
+   
+          <h1 class="main-title" data-aos="fade-up"><i class="fa-solid fa-cube f-4" data-aos="zoom-in" data-aos-delay="200" data-aos-duration="500"></i>Simuler l'envoi de mon colis   <a href="#" data-bs-toggle="modal" data-bs-target="#PanierModal" style="">
+            <i class="fa-solid fa-basket-shopping" style="color: #fbe254; font-size: 44px;"></i>
+            <span style="color: red; font-weight: bold;">{{ panier.length }}</span>
+        </a>              </h1>
           <form (ngSubmit)="onSubmit(formulaire)" #formulaire="ngForm" (change)="showPrice()" >
             <div class="row">
-          <div class="col-sm-12 col-md-8 simulator-form" *ngIf="showFirstRow"  id="1">
-              <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100">
-                <label>Je choisis le type d'expédition</label>
-                  <div class="d-flex">
-                    <div class="form-check mr-5 " style="margin-right: 50px;">
-                      <input type="radio" class="form-check-input" id="pointRelais" name="typeExpedition" [(ngModel)]="typeExpedition" value="Point de relais" required>
-                      <label class="form-check-label" for="pointRelais">Point de relais</label>
-                    </div>
-                  </div>
-                <div class="form-check">
-                  <input type="radio" class="form-check-input" id="aDomicile" name="typeExpedition" [(ngModel)]="typeExpedition" value="À domicile" required>
-                  <label class="form-check-label" for="aDomicile">À domicile</label>
-                </div>
-              </div>
-              <!-- <h5>Je saisis le poids de mon colis (kg)</h5> -->
-              <div class="form-group f-5" data-aos="fade-right" data-aos-delay="200">
-                <label for="poids">Je saisis le poids de mon colis (kg) </label>
-                <input type="number" min="0" max="20" class="form-control" id="poids" name="poids" value="poids" placeholder="le poids de mon colis" [(ngModel)]="poids" required>
-                <div *ngIf="formulaire.controls['poids']?.invalid && formulaire.controls['poids']?.touched" style="font-size: 12px;
-                font-weight: bold;
-                color: red;">
-                  Le poids est requise.
-                </div>
-              </div>       
+            
+          <div class="col-sm-12 col-md-8 simulator-form" *ngIf="showFirstRow"  id="1">            
         <div class="row">
 
-
-          <div>
-           
-            <a (click)="getLocation()" style="    color: #73c561;
-            font-size: 17px;
-            font-weight: bold;cursor: grab;">
-              <i class="fas fa-map-marker-alt" style="    color: #73c561;font-size: 26px;"> </i> Me géolocaliser</a>
-          </div>
           <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="300">
+          
             <!-- geolocation.component.html -->
             <h5>Expédition</h5>
             <div class="f-5">    
            <div class="form-group">
-                <label for="villeSource">Ville source</label>
-                <input class="form-control" type="text" [(ngModel)]="villeSource" name="villeSource" required>
+                <label for="villeSource">Ville source* </label><a (click)="getLocation()" style="    color: #73c561;
+                font-size: 17px;
+                font-weight: bold;cursor: grab;">
+                  <i class="fas fa-map-marker-alt" style="    color: #73c561;font-size: 18px;"> </i></a>
+                <input class="form-control" type="text" [(ngModel)]="villeSource" name="villeSource" (ngModelChange)="onAddressChange()" required>
                 <div *ngIf="formulaire.controls['villeSource']?.invalid && formulaire.controls['villeSource']?.touched" style="font-size: 12px;
                 font-weight: bold;
                 color: red;">
@@ -58,8 +32,8 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="quartierSource">Quartier source</label>
-                <input class="form-control" type="text" [(ngModel)]="adresseDetaillee" name="adresseDetaillee" [disabled]="!villeSource" required>
+                <label for="quartierSource">Quartier source*</label>
+                <input class="form-control" type="text" [(ngModel)]="adresseDetaillee" name="adresseDetaillee" [disabled]="!villeSource" (ngModelChange)="onAddressChange()" required>
                 <div *ngIf="formulaire.controls['adresseDetaillee']?.invalid && formulaire.controls['adresseDetaillee']?.touched" style="font-size: 12px;
                 font-weight: bold;
                 color: red;">
@@ -67,7 +41,7 @@
                 </div>
               </div>
                 <!-- Button trigger popup source -->
-            <a  href="#" data-bs-toggle="modal" data-bs-target="#SourceModal" (click)="geocodeByStreet(villeSource, adresseDetaillee)" *ngIf="adresseDetaillee && villeSource && typeExpedition">
+            <a  href="#" data-bs-toggle="modal" data-bs-target="#SourceModal" (click)="geocodeByStreet(villeSource, adresseDetaillee)" *ngIf="adresseDetaillee && villeSource">
               <i class="fas fa-map-marker-alt"></i>
               Trouver un point relais
             </a>
@@ -75,10 +49,22 @@
           </div>    
           <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="400">
             <h5>Destination</h5>
-           
+            <div class="row">
+              <div class="col-6">
+                <div class="form-check mr-5 " style="margin-right: 50px;">
+                  <input type="radio" class="form-check-input" id="pointRelais" name="typeExpedition" [(ngModel)]="typeExpedition" value="Point de relais" required>
+                  <label class="form-check-label" for="pointRelais">Point de relais</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <input type="radio" class="form-check-input" id="aDomicile" name="typeExpedition" [(ngModel)]="typeExpedition" value="À domicile" required>
+                <label class="form-check-label" for="aDomicile">À domicile</label>
+              </div>
+            </div>
+          
             <div class = "f-5">
               <div class="form-group">
-                <label for="villeDestination">Ville destination</label>
+                <label for="villeDestination">Ville destination*</label>
                 <input class="form-control" type="text" name="villeDestination" [(ngModel)]="villeDestination"  required>
                 <div *ngIf="formulaire.controls['villeDestination']?.invalid && formulaire.controls['villeDestination']?.touched" style="font-size: 12px;
                 font-weight: bold;
@@ -87,7 +73,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="quartierDestination">Quartier destination</label>
+                <label for="quartierDestination">Quartier destination*</label>
                 <input class="form-control" type="text" name="quartierDestination" [(ngModel)]="quartierDestination" [disabled]="!villeDestination" required>
                 <div *ngIf="formulaire.controls['quartierDestination']?.invalid && formulaire.controls['quartierDestination']?.touched" style="font-size: 12px;
                 font-weight: bold;
@@ -104,6 +90,17 @@
             </div>
            
           </div>
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="200">
+            <label for="poids">Je saisis le poids de mon colis (kg) </label>
+            <input type="number" min="0" max="20" class="form-control" id="poids" name="poids" value="poids" placeholder="le poids de mon colis" [(ngModel)]="poids" required>
+            <div *ngIf="formulaire.controls['poids']?.invalid && formulaire.controls['poids']?.touched" style="font-size: 12px;
+            font-weight: bold;
+            color: red;">
+Le poids ne doit pas excéder 20 kg.
+               </div>
+          </div>    
+        
+    
           <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100">
             <span style="font-weight: bold;
             color: #68c054;"><i class="fa-solid fa-arrow-right"></i> Option d'envoi</span>
@@ -113,7 +110,7 @@
                   <input type="checkbox" class="form-check-input" (change)="toggleAmountInput()" >
                   <label class="form-check-label" for="pointRelais">Contre rembourcement: Montant à retourner</label>
                   <input type="number" class="form-text-input" style="margin-left: 31px;
-                  border-radius: 10px;padding-left: 51px;" placeholder="Montant DHS..." *ngIf="showAmountInput" name="additionalAmount" [(ngModel)]="additionalAmount">
+                  border-radius: 10px;padding-left: 51px;" placeholder="Montant DHS..." *ngIf="showAmountInput" name="additionalAmount" pattern="^\d+(\.50|\.55)?$" [(ngModel)]="additionalAmount">
                 </div>
               </div>
               <div class="d-flex">
@@ -121,25 +118,33 @@
                   <input type="checkbox" class="form-check-input"  (change)="toggleAmountInpu2t()" >
                   <label class="form-check-label" for="pointRelais">Assurance colis : Valeur à déclarer </label>
                   <input type="number" class="form-text-input" style="margin-left: 31px;
-                  border-radius: 10px;padding-left: 51px;" placeholder="Montant DHS..." *ngIf="showAmountInput2" name="AssuranceAmount" [(ngModel)]="AssuranceAmount">
+                  border-radius: 10px;padding-left: 51px;" placeholder="Montant DHS..." *ngIf="showAmountInput2" name="AssuranceAmount" pattern="^\d+(\.50|\.55)?$" [(ngModel)]="AssuranceAmount">
                 </div>
               </div>
-              
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" value="Accusé de réception SMS"  (change)="toggleAmountInput3()" required>
-              <label class="form-check-label" for="aDomicile">Accusé de réception SMS</label>
-            </div>
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" (change)="toggleAmountInput4()" value="Accusé de réception SMS" required>
-              <label class="form-check-label" for="aDomicile">Preuve de livraison</label>
-            </div>
           </div>
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100">
+            <div class="d-flex">
+              <div class="form-check mr-5 " style="margin-right: 50px;">
+                <form [formGroup]="form">
+                  <i class="fa-solid fa-arrow-right"></i>&NonBreakingSpace;  <label class="form-check-label" for="Standard">Date de traitement:</label>
+                   &NonBreakingSpace;
+                  <input type="datetime-local" formControlName="datetime" style="border: none;" readonly>
+                </form>
+                <form [formGroup]="form">
+                  <i class="fa-solid fa-arrow-right"></i>&NonBreakingSpace;  <label class="form-check-label" for="Standard">Date de livraison prévisionnel:</label>
+                   &NonBreakingSpace;  <span>Entre le {{ form.get('deliveryDate')?.value }}</span>
+                </form>
+                
+              </div>
+            </div>
+  
+        </div>
         </div>
       </div>
       <div class="col-sm-12 col-md-8 simulator-form" *ngIf="!showFirstRow"id="2" >
            
-  <div class="row"><span style="font-weight: bold;
-    color: #68c054;    font-size: 21px;" *ngIf="showFirstButton"><i class="fa-solid fa-arrow-right"></i> Informations détaillées</span>
+  <div class="row">
+    <span style="font-weight: bold;color: #68c054;font-size: 21px;" *ngIf="showFirstButton"><i class="fa-solid fa-arrow-right"></i> Informations détaillées </span>
    
     <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="300" *ngIf="showFirstButton">
       <!-- geolocation.component.html -->
@@ -217,33 +222,37 @@
           <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email...." name="destinataire_email" [(ngModel)]="destinataire_email">
 
         </div>
+
    
-      </div>
-    </div>
-    <div class="row" style="margin-top: 30px;" *ngIf="!showFirstButton">
-     
-      <div class="col">
-        <div class="border border-success" style="    height: 46px;
-        padding: 11px;
-        width: 187px;
-        background-color: #68c054;
-        color: white;
-        font-size: 16px;
-        font-weight: bold;
-        margin-top: 68px;
-        margin-left: 90px;">Votre code d'envoi</div>
-      </div>
-      <div class="col">
-        <img src="../../../assets/barcode.jpg" alt="Girl in a jacket" width="200" height="200">
       </div>
     </div>
     
   </div>
+  <div class="row" style="margin-top: 30px;" *ngIf="!showFirstButton">
+     
+    <div class="col">
+      <div class="border border-success" style="    height: 46px;
+      padding: 11px;
+      width: 187px;
+      background-color: #68c054;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 68px;
+      margin-left: 90px;">Votre code d'envoi:</div>
+    </div>
+    <div class="col">
+      <img #barcode [src]="barcodeImage" alt="Barcode Image" />
+    </div>
+  </div>
+
 </div>
       <div class="col-sm-12 col-md-4 result" data-aos="flip-left"
       data-aos-easing="ease-out-cubic"
       data-aos-duration="2000">
           <h3>Vos résultats</h3>
+         
+          
           <ul>
             <li>
               <p><i class="fas fa-store"></i>Type d'expédition : <span *ngIf="typeExpedition" class="options">{{typeExpedition}}</span></p>
@@ -257,30 +266,39 @@
             <li *ngIf="showAmountInput">
   <p>
     <i class="fa-solid fa-money-bill-trend-up"></i> Contre remboursement :
-    <span class="options">{{ (additionalAmount ? additionalAmount : 0) * 0.8 }} MAD</span>
-
+    <span class="options">
+      {{ ((additionalAmount ? additionalAmount : 0) * 0.8 / 100).toFixed(2) }} MAD
+    </span>
+    
       </p>            </li>
   <li *ngIf="showAmountInput2">
     <p>
 <i class="fa-solid fa-circle-dollar-to-slot"></i> Assurance colis :
-<span class="options">{{(AssuranceAmount ? AssuranceAmount :0)* 0.5 }} MAD</span>
+<span class="options">{{((AssuranceAmount ? AssuranceAmount :0)* 0.5/100).toFixed(2) }} MAD</span>
     </p>            </li>
     <li *ngIf="showAmountInput3">
       <p>
     <i class="fa-solid fa-comment-sms"></i> Accusé de réception SMS :
-  <span class="options">1.7 MAD</span>
+  <span class="options">{{Smsttc}} MAD</span>
       </p>            </li>
   <li *ngIf="showAmountInput4">
         <p>
           <i class="fa-solid fa-truck"></i> Preuve de livraison :
-    <span class="options">10 MAD</span>
+    <span class="options">{{Deliveryttc}} MAD</span>
         </p>            </li>
+        <li>
+          <p>
+            <i class="fa-solid fa-diamond-turn-right"></i> TOTAL :
+            <span class="options">{{ calculateTotal() ?calculateTotal() :0}} MAD</span>
+          </p>            </li>
             <div *ngIf="selectedRelayPointSource" class="selectedSource">
             <li style="margin-top: 5%;">
             <h4>Point de relais de dépôt</h4>
             <br/>
             <p>{{ selectedRelayPointSource.code_es }} | {{ selectedRelayPointSource.agence }}</p>
-            <p class="adress"> <i class="fas fa-map-marker-alt"></i>{{ selectedRelayPointSource.Adresse }}</p>
+            <p class="adress">                 <a (click)="getGoogleMapsUrl(selectedRelayPointSource.Adresse)">
+              <i class="fas fa-map-marker-alt"></i>
+              </a>{{ selectedRelayPointSource.Adresse }}</p>
             
 
             <!-- <h4>Horaires d'ouverture</h4> -->
@@ -289,15 +307,13 @@
             </div>
             <div >
                 <p class="adress"><i class="fa-solid fa-shop"></i> Samedi 9h00 -17h00</p>
-                <p class="adress"><i class="fa-solid fa-person-walking"></i> {{ selectedRelayPointSource.walkingTime }}</p>
-            <p class="adress"><i class="fa-solid fa-car"></i> {{ selectedRelayPointSource.drivingTime }}</p>
-
+          
             </div>
               <!-- Autres détails du point relais sélectionné -->
             
             </li>
           </div>
-          <div *ngIf="selectedRelayPointSource2" class="selectedSource">
+          <div *ngIf="selectedRelayPointSource2 && typeExpedition!='À domicile'" class="selectedSource">
             <li style="margin-top: 5%;">
             <h4>Point de relais de destination</h4>
             <br/>
@@ -314,28 +330,41 @@
           </div>
             </li>
           </div>
+          <div *ngIf="typeExpedition === 'À domicile'" class="selectedSource">
+            <li style="margin-top: 5%;">
+            <h4>Adresse de destination</h4>
+            <br/>
+            <p class="adress"> <i class="fas fa-map-marker-alt"></i>{{ villeDestination }}</p>
+            <p class="adress"> <i class="fas fa-map-marker-alt"></i>{{ quartierDestination }}</p>
+            
+            
+            </li>
+          </div>
         </ul>
         </div>
        
      <br/>
     </div>
 
-               <button type="submit" class="btn btn-primary" (click)="onSubmit(formulaire)" *ngIf="showFirstRow"  [disabled]="!formulaire.valid" style="border: none;
-               border-radius: 9%;
-               width: 160px;">Continuer</button>
-               <div *ngIf="!showFirstRow" >
-                <!-- Button to generate a random 10-digit barcode -->
+
+    <button type="submit" class="btn btn-primary" (click)="onSubmit(formulaire)" *ngIf="showFirstRow"  [disabled]="!formulaire.valid" style="border: none;
+    border-radius: 9%;
+    width: 160px;">Continuer</button> 
+             <div *ngIf="!showFirstRow" >
+              <!-- Button to generate a random 10-digit barcode -->
+              <button type="submit" class="btn btn-primary" style="background-color: #104533;
+  color: #6cbf44;border: none;"  (click)="toggleVisibility()"  *ngIf="showFirstButton"  >Récuperer mon code d'envoi</button>&NonBreakingSpace;&NonBreakingSpace;  <button type="submit" class="btn btn-primary"  [disabled]="!formulaire.valid" style="border: none;
+            border-radius: 9%;
+            width: 160px;" *ngIf="showFirstButton" (click)="Paniertocodebarre()">Ajouter autre</button>
+             
                 <button type="submit" class="btn btn-primary" style="background-color: #104533;
-    color: #6cbf44;border: none;"  (click)="toggleVisibility(formulaire)"  [disabled]="!formulaire.valid">Récuperer mon code d'envoi</button>
+    color: #6cbf44;border: none;" *ngIf="!showFirstButton" href="/simulateur" (click)="downloadBarcodeAsPDF()"  >Télécharger mon code <i class="fa-solid fa-cloud-arrow-down"></i></button>
               </div>
-              <div *ngIf="!showFirstRow" >
-                <!-- Button to generate a random 10-digit barcode 
-                <button type="submit" class="btn btn-primary" style="background-color: #104533;
-    color: #6cbf44;border: none;" *ngIf="!showFirstButton">Télécharger mon code <i class="fa-solid fa-cloud-arrow-down"></i></button>-->
-              </div>
-      </form>
+            </form>
+
         <!-- end simulator form -->
   </div>
+  
 <!-- Pop up destination  -->
 <div class="modal fade map-centent" id="destinationModal" tabindex="-1" aria-labelledby="destinationModal" aria-hidden="true">
   <div class="modal-dialog test">
@@ -360,6 +389,15 @@
                   <div>
                     <p>Samedi 9h00 -17h00</p>
                     <p class="adress"><i class="fa-solid fa-route"></i> {{ marker2.distance }} km</p>
+                    <p class="adress">
+                      <a (click)="getGoogleMapsUrl(marker2.Adresse)">
+                        <i class="fa-solid fa-person-walking"></i>
+                      </a> 
+                      {{ marker2.walkingTime || 'Calcul en cours...' }}                    </p>
+                      <p class="adress">
+                        <a (click)="getGoogleMapsUrl(marker2.Adresse)">
+                          <i class="fa-solid fa-car"></i></a> 
+                        {{ marker2.drivingTime || 'Calcul en cours...' }}                    </p>
 
                   </div>
                   
@@ -372,9 +410,25 @@
       
           <div class="col-md-7 col-lg-7 col-sm-7">
             <!-- Google Map avec marqueurs -->
-            <google-map [height]="'400px'" [center]="center" [zoom]="zoom" [options]="mapOptions">
-              <map-marker *ngFor="let marker2 of markers" [position]="marker2.position"></map-marker>
-            </google-map>
+            <google-map style="width: 100%; height: 400px;" [center]="center" [zoom]="zoom" [options]="mapOptions">
+              <map-marker *ngFor="let marker2 of markers"
+                          #markerRef2="mapMarker"
+                          [position]="marker2.position"
+                          (mapClick)="openInfoWindow(infoWindow, markerRef2, marker2)"
+                          (mapClick)="onSelectRelayPoint2(marker2)">
+              </map-marker>
+              <map-marker *ngIf="markerPosition" [position]="markerPosition" [options]="markerOptions"></map-marker>
+              <map-info-window #infoWindow="mapInfoWindow">
+                <div *ngIf="selectedMarker">
+                  <h6>{{ selectedMarker.code_es }} | {{ selectedMarker.agence }}</h6>
+                  <p><i class="fas fa-map-marker-alt"></i> {{ selectedMarker.Adresse }} </p>
+                  <p><i class="fa-solid fa-route"></i> {{ selectedMarker.distance }} KM</p>
+                  <p><i class="fa-solid fa-person-walking"></i> {{ selectedMarker.walkingTime }}</p>
+                  <p><i class="fa-solid fa-car"></i> {{ selectedMarker.drivingTime }}</p>
+
+                </div>
+              </map-info-window>
+          </google-map>
           </div>
         </div>
       </div>
@@ -387,6 +441,22 @@
     </div>
   </div>
 </div>
+<style>
+  @media (max-width: 768px) {
+      .modal-dialog {
+          max-width: 90%;
+      }
+      .modal-title, .modal-body {
+          font-size: 14px;
+      }
+      
+  }
+  @media (max-width: 768px) {
+    google-map {
+        height: 300px; /* Hauteur plus petite pour les appareils mobiles */
+    }
+  }
+  </style>
 </div>
 
 <!-- Pop up source  -->
@@ -414,20 +484,52 @@
                     <p>Samedi 9h00 -17h00</p>
                   </div>
                     <p class="adress"><i class="fa-solid fa-route"></i> {{ marker.distance }} km</p>
+                    <p class="adress">
+                      <a (click)="getGoogleMapsUrl(marker.Adresse)">
+                        <i class="fa-solid fa-person-walking"></i>
+                      </a> 
+                      {{ marker.walkingTime || 'Calcul en cours...' }}                    </p>
+                      <p class="adress">
+                        <a (click)="getGoogleMapsUrl(marker.Adresse)">
+                          <i class="fa-solid fa-car"></i></a> 
+                        {{ marker.drivingTime || 'Calcul en cours...' }}                    </p>
+
+
                 </li>
                 <button class="btn" data-bs-dismiss="modal" (click)="onSelectRelayPoint(marker)" style="background-color: rgb(251,226,84, 1);
                 color: var(--green);">Sélectionner</button>
               </div>
             </div>
           </div> 
-      
-          <div class="col-md-7 col-lg-7 col-sm-7">
-            <!-- Google Map avec marqueurs -->
-            <google-map [height]="'400px'" [center]="center" [zoom]="zoom" [options]="mapOptions">
-              <map-marker *ngFor="let marker of markers" [position]="marker.position"></map-marker>
+          <div class="col-12 col-md-7">
+            <google-map [center]="center" [zoom]="zoom" [options]="mapOptions">
+              <map-marker *ngFor="let marker of markers"
+                          #markerRef="mapMarker"
+                          [position]="marker.position"
+                          (mapClick)="openInfoWindow(infoWindow, markerRef, marker)"
+                          (mapClick)="onSelectRelayPoint(marker)">
+              </map-marker>
+              <map-marker *ngIf="markerPosition" [position]="markerPosition" [options]="markerOptions"></map-marker>
+              <map-info-window #infoWindow="mapInfoWindow">
+                <div *ngIf="selectedMarker">
+                  <h6>{{ selectedMarker.code_es }} | {{ selectedMarker.agence }}</h6>
+                  <p><i class="fas fa-map-marker-alt"></i> {{ selectedMarker.Adresse }} </p>
+                  <p><i class="fa-solid fa-route"></i> {{ selectedMarker.distance }} KM</p>
+                  <p><i class="fa-solid fa-person-walking"></i> {{ selectedMarker.walkingTime }}</p>
+                  <p><i class="fa-solid fa-car"></i> {{ selectedMarker.drivingTime }}</p>
+
+                </div>
+              </map-info-window>
             </google-map>
-          </div>
+            
+          
+            
         </div>
+      
+  
+        
+        </div>
+      
       </div>
       
       <div class="modal-footer">
@@ -437,12 +539,127 @@
     </div>
   </div>
 </div>
+<div class="modal fade map-content" id="PanierModal" tabindex="-1" aria-labelledby="PanierModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <!-- Boucle sur les éléments du panier -->
+          <div class="cart-item" *ngFor="let item of panier; let i = index">
+            <div class="item-header">
+              <i class="fa-solid fa-box-open item-icon"></i>
+              <span class="item-name">{{ item.dest_name }} {{ item.dest_prenom }}</span>
+            </div>
+            <div class="item-body">
+              <span class="item-detail">{{ item.type_expedition }}</span>
+              <span class="item-detail">{{ item.poids }} kg</span>
+              <span class="item-detail">{{ item.Total }} MAD</span>
+              <!-- Autres détails... -->
+            </div>
+            <div class="item-footer">
+              <span class="item-total"></span>
+
+              <i class="fa-solid fa-trash item-delete" (click)="supprimerDuPanier(i)" *ngIf="showFirstButton"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="total-container">
+          <span class="total-label">Total:</span>
+          <span class="total-amount">{{ getTotalPanier() }} MAD</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
+
+  </div>
+  <style>
+  .map-content .modal-content {
+  background-color: #fff;
+  color: #333;
+  border-radius: 8px;
+}
+
+.cart-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.item-header {
+  display: flex;
+  align-items: center;
+}
+
+.item-icon {
+  font-size: 30px;
+  color: #f7e164;
+  margin-right: 10px;
+}
+
+.item-name {
+  font-weight: bold;
+}
+
+.item-body {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.item-detail {
+  color: #555;
+}
+
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.item-total {
+  font-weight: bold;
+  color: #68c054;
+}
+
+.item-delete {
+  font-size: 20px;
+  color: #ff0707;
+  cursor: pointer;
+}
+
+.total-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.total-label {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: black;
+  margin-right: 10px;
+}
+
+.total-amount {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #ff0707;
+}
+
+  </style>
+</div>
+
         
-          
-          
+
           
           
           

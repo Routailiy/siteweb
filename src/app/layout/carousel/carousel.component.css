@@ -49,3 +49,64 @@
 
   }
 }
+.tracking-progress-container {
+  max-width: 600px;
+  margin: auto;
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+  background-color: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 20px;
+}
+
+.progress {
+  height: 100%;
+  background-color: #4caf50; /* Couleur verte pour la progression */
+  width: 0%; /* Défini dynamiquement par Angular */
+  transition: width 0.6s ease;
+}
+
+.progress-steps {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+
+
+.progress-steps li {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.progress-steps li.completed {
+  font-weight: bold;
+}
+
+.step-date {
+  display: block;
+  font-size: 12px;
+  color: #666;
+}
+
+.step-description, .step-location {
+  display: block;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  background-color: #fff3cd;
+  color: #856404;
+  border-radius: 4px;
+  border: 1px solid #ffeeba;
+  max-width: 600px;
+  margin: auto;
+}

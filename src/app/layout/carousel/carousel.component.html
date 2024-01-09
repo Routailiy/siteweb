@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="inside_hero col-lg-6 col-md-6 col-sm-12 bg-cards">
-            <app-card (adressEmitter)="addAdress($event)"></app-card> 
+            <app-card (adressEmitter)="addAdress($event)" (trackingDataEmitter)="onTrackingDataReceived($event)"></app-card> 
           </div>
         </div>
     </div>
@@ -55,16 +55,34 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- Include the modal-content component -->
         <app-popup-map  [fromHomePage]="true" [address]="adress"></app-popup-map>
       </div>
       <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-        <!-- <button type="button" class="btn" data-bs-dismiss="modal">Valider mon choix</button> -->
+
       </div>
     </div>
   </div>
 </div>
+<div div class="modal fade map-centent" id="trakingcolis" tabindex="-1" aria-labelledby="trakingcolis" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Suivre un colis</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      </div>
+      <div class="modal-body">
+<!-- <app-carousel #carouselComponent></app-carousel> -->
+        <app-tracking [trackingData]="trackingData"></app-tracking> 
+   
+              </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- End Hero Section -->
 <app-offre-messagerie></app-offre-messagerie>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { TrackingInfo } from '../tracking/tracking.model';
 
 @Component({
   selector: 'app-carousel',
@@ -7,7 +8,11 @@ import { Component } from '@angular/core';
 })
 export class CarouselComponent {
 adress!:string;
-  addAdress(event:string){
+@Input() trackingData: TrackingInfo[] = [];
+onTrackingDataReceived(trackingData: TrackingInfo[]) {
+  this.trackingData = trackingData;
+}
+addAdress(event:string){
    this.adress=event;
   }
 }

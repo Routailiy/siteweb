@@ -65,7 +65,11 @@
   }
 
 
-  
+  .map-centent{
+      z-index: 1000; /* Un nombre élevé pour être au-dessus des autres éléments */
+      position: fixed; /* Ou `absolute`, selon la situation */
+      /* ... autres styles ... */
+  }
   .cards .icon-boxes .icon-box .btn-primary:active {
     background-color: var(--green);
   }
@@ -73,6 +77,7 @@
   .cards .icon-boxes .icon-box .btn-primary:hover {
     background-color: grey;
   }
+  
   
   
   .cards .content {

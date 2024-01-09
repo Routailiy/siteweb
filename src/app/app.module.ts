@@ -37,6 +37,8 @@ import { ServiceMessagerieParticulierComponent } from './layout/service-messager
 import { CareersComponent } from './layout/careers/careers.component';
 import { RouterLinkActive, RouterModule } from '@angular/router';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { TrackingComponent } from './layout/tracking/tracking.component';
+import { NearbyPointsModalComponent } from './layout/nearby-points-modal/nearby-points-modal.component';
 
 
 
@@ -75,6 +77,8 @@ import { GooglePlaceModule } from "ngx-google-places-autocomplete";
     ServiceMessagerieParticulierComponent,
     CareersComponent,
     AdressInputComponent,
+    TrackingComponent,
+    NearbyPointsModalComponent
   ],
   imports: [
     RouterModule,

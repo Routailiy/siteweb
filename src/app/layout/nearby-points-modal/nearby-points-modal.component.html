@@ -1,0 +1,12 @@
+<div  class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="close()">×</span>
+      <h2>Points de Vente Proches</h2>
+      <ul>
+        <li *ngFor="let marker of markers">
+          {{ marker.agence }} - {{ marker.Adresse }} ({{ marker.distance }} km)
+        </li>
+      </ul>
+    </div>
+  </div>
+  

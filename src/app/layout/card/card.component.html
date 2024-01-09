@@ -8,7 +8,7 @@
                 <div class = "required input-box">
                   <input type="text" placeholder="L'adresse(ville/quartier)" class="input-text" [(ngModel)]="adress">
                 </div>
-               <a  href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#destinationModal" (click)="addAdress(adress)">
+               <a  href="#" class="btn btn-primary" (click)="addAdress(adress)">
                 Rechercher
                 </a>
               </div>
@@ -20,9 +20,11 @@
                 <h4 class="c-2">Suivre un colis</h4>
                 <p>xxxxxxxx</p>
                 <div class = "required input-box">
-                  <input type="text" placeholder="Le numéro de votre colis" class="input-text">
+                  <input type="text" placeholder="Le numéro de votre colis" class="input-text" name="trackingNumber" [(ngModel)]="trackingNumber">
                 </div>
-                <a  class="btn btn-primary">Suivre</a>
+                <!-- <a  class="btn btn-primary"   data-bs-toggle="modal" data-bs-target="#trakingcolis" >Suivre</a> -->
+                <a class="btn btn-primary" (click)="trackPackage()" data-bs-toggle="modal" data-bs-target="#trakingcolis">Suivre</a>
+
               </div>
             </div>
             <div class="box col-md-4 col-sm-12 col-xl-4  col-lg-4 d-flex align-items-stretch  ">
@@ -43,4 +45,7 @@
           </div>
         </div>
       </div>
+
+
+<!-- <app-nearby-points-modal  [markers]="markers"></app-nearby-points-modal>-->
 

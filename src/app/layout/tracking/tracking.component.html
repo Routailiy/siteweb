@@ -1,0 +1,30 @@
+<div *ngIf="isLoading" class="loading-container">
+  <div class="loader"></div>
+</div>
+
+<div *ngIf="!isLoading">
+
+<div *ngIf="trackingData.length > 0; else noData" class="tracking-progress-container">
+  <div class="progress-bar">
+    <div class="progress" [style.width]="calculateProgressWidth(trackingData) + '%'">
+      <!-- Icônes pour chaque étape -->
+      <i *ngIf="isStageReached('charge')" class="fa-solid fa-box step-icon charge"></i>
+      <i *ngIf="isStageReached('discharge')" class="fa-solid fa-truck-loading step-icon discharge"></i>
+      <i *ngIf="isStageReached('delivered')" class="fa-solid fa-check-circle step-icon delivered"></i>
+    </div>
+  </div>
+  <ul class="progress-steps">
+    <li *ngFor="let data of trackingData" [class.completed]="data.completed">
+      <span class="step-date">{{ data.date }}</span>
+      <span class="step-description">{{ data.operation_type }}</span>
+      <span class="step-location">{{ data.position_final }}</span>
+    </li>
+  </ul>
+</div>
+
+<ng-template #noData>
+  <div class="no-data">
+    <p>Aucune donnée de suivi disponible.</p>
+  </div>
+</ng-template>
+</div>
