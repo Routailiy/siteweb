@@ -72,7 +72,7 @@
                   Ville destination est requise.
                 </div>
               </div>
-              <div class="form-group">
+              <div class="form-group" *ngIf="typeExpedition=='Point de relais'" >
                 <label for="quartierDestination">Quartier destination*</label>
                 <input class="form-control" type="text" name="quartierDestination" [(ngModel)]="quartierDestination" [disabled]="!villeDestination" required>
                 <div *ngIf="formulaire.controls['quartierDestination']?.invalid && formulaire.controls['quartierDestination']?.touched" style="font-size: 12px;
@@ -199,7 +199,7 @@ Le poids ne doit pas excéder 20 kg.
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" >
           <label for="quartierSource"></label>
           <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Prénom...." name="destinataire_prenom" [(ngModel)]="destinataire_prenom">
           <div *ngIf="formulaire.controls['destinataire_name']?.invalid && formulaire.controls['destinataire_name']?.touched" style="font-size: 12px;
@@ -217,6 +217,31 @@ Le poids ne doit pas excéder 20 kg.
             Téléphone est requise.
           </div>
         </div>
+        <br/>
+        <div class="form-group" *ngIf="typeExpedition == 'À domicile'">
+        <b>Pour faciliter la livraison, merci de saisir toutes les informations relatives à l'adresse complète</b> 
+          <div class="form-group col">
+              <input class="form-control" type="number" name="quartierDestination" [(ngModel)]="NumeroQuartier" [disabled]="!villeDestination" placeholder="Numero...." required>
+              <div *ngIf="formulaire.controls['quartierDestination']?.invalid && formulaire.controls['NumeroQuartier']?.touched" style="font-size: 12px; font-weight: bold; color: red;">
+                  Numero est requise.
+              </div>
+          </div>
+      
+          <div class="form-group col">
+              <input class="form-control" type="text" name="NumeroQuartier" [(ngModel)]="quartierDestination" [disabled]="!villeDestination" placeholder="Quartier...." required>
+              <div *ngIf="formulaire.controls['quartierDestination']?.invalid && formulaire.controls['quartierDestination']?.touched" style="font-size: 12px; font-weight: bold; color: red;">
+                Quartier est requise.
+            </div>       
+            </div>
+      
+          <div class="form-group col">
+              <input class="form-control" type="text" name="AdressDes" [(ngModel)]="AdressDes" [disabled]="!villeDestination" placeholder="Adresse...." required>
+              <div *ngIf="formulaire.controls['AdressDes']?.invalid && formulaire.controls['AdressDes']?.touched" style="font-size: 12px; font-weight: bold; color: red;">
+                Adress est requise.
+            </div>      
+          </div>
+      </div>
+      
         <div class="form-group">
           <label for="quartierSource"></label>
           <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email...." name="destinataire_email" [(ngModel)]="destinataire_email">
@@ -335,7 +360,7 @@ Le poids ne doit pas excéder 20 kg.
             <h4>Adresse de destination</h4>
             <br/>
             <p class="adress"> <i class="fas fa-map-marker-alt"></i>{{ villeDestination }}</p>
-            <p class="adress"> <i class="fas fa-map-marker-alt"></i>{{ quartierDestination }}</p>
+            <p class="adress"> <i class="fas fa-map-marker-alt"></i>{{ NumeroQuartier }} {{ quartierDestination }} {{ AdressDes }}</p>
             
             
             </li>
@@ -352,6 +377,10 @@ Le poids ne doit pas excéder 20 kg.
     width: 160px;">Continuer</button> 
              <div *ngIf="!showFirstRow" >
               <!-- Button to generate a random 10-digit barcode -->
+              <button type="submit" class="btn btn-primary"  (click)="BackRows()" *ngIf="!showFirstRow" style="border: none;
+              border-radius: 9%;
+              width: 160px;"> <i class="fa-solid fa-backward"></i> Retour</button> &NonBreakingSpace;&NonBreakingSpace; 
+
               <button type="submit" class="btn btn-primary" style="background-color: #104533;
   color: #6cbf44;border: none;"  (click)="toggleVisibility()"  *ngIf="showFirstButton"  >Récuperer mon code d'envoi</button>&NonBreakingSpace;&NonBreakingSpace;  <button type="submit" class="btn btn-primary"  [disabled]="!formulaire.valid" style="border: none;
             border-radius: 9%;
@@ -408,9 +437,9 @@ Le poids ne doit pas excéder 20 kg.
             </div>
           </div> 
       
-          <div class="col-md-7 col-lg-7 col-sm-7">
+          <div class="container col-md-5 col-lg-5 col-sm-5 overflow-auto px-5">
             <!-- Google Map avec marqueurs -->
-            <google-map style="width: 100%; height: 400px;" [center]="center" [zoom]="zoom" [options]="mapOptions">
+            <google-map  height="400px" width="100%" [center]="center" [zoom]="zoom" [options]="mapOptions">
               <map-marker *ngFor="let marker2 of markers"
                           #markerRef2="mapMarker"
                           [position]="marker2.position"
@@ -500,9 +529,9 @@ Le poids ne doit pas excéder 20 kg.
                 color: var(--green);">Sélectionner</button>
               </div>
             </div>
-          </div> 
-          <div class="col-12 col-md-7">
-            <google-map [center]="center" [zoom]="zoom" [options]="mapOptions">
+          </div>
+          <div class="container col-md-5 col-lg-5 col-sm-5 overflow-auto px-5">
+            <google-map [center]="center" [zoom]="zoom" [options]="mapOptions"  height="400px" width="100%">
               <map-marker *ngFor="let marker of markers"
                           #markerRef="mapMarker"
                           [position]="marker.position"

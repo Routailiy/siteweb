@@ -89,6 +89,8 @@ panier: any[] = [];
     villeDestination!: string;
     quartiersDestination: CityModel[]=[];
     quartierDestination!: string;
+    NumeroQuartier!: string;
+   AdressDes!: string;
     quartiersSource: CityModel[]=[];
     quartierSource : string="";
     villes: string[] = [];
@@ -727,6 +729,9 @@ panier: any[] = [];
       this.showFirstRow = !this.showFirstRow;
     }
     showAmountInput: boolean = false;
+    BackRows() {
+      this.showFirstRow == true;
+    }
 
     toggleAmountInput() {
       this.showAmountInput = !this.showAmountInput;
