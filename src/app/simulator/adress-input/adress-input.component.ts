@@ -1,22 +1,24 @@
-  import { Component, ViewChild, AfterViewInit, ElementRef, NgModule, ChangeDetectorRef } from '@angular/core';
-  // import { CityService } from '../../services/city.service';
-  // import { CityModel } from 'src/app/Model/cityModel';
-  import { RelayPoint } from 'src/app/Model/RelayPointModel';
-  import { RelayPointService } from '../../services/relay-point.service';
-  import { FormControl, FormGroup, NgForm } from '@angular/forms';
-  import { ActivatedRoute } from '@angular/router';
-  import { HttpClient } from '@angular/common/http';
-  import * as JsBarcode from 'jsbarcode';
-  import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
-  import { DataService } from './data-service';
-  import { Data } from './data.model';
-  import { map, catchError } from 'rxjs/operators';
-  import { Observable, of } from 'rxjs';
-  import { ApiService } from './api_service';
-  import { CityService } from './city_service';
+import { Component, ViewChild, AfterViewInit, ElementRef, NgModule, ChangeDetectorRef } from '@angular/core';
+// import { CityService } from '../../services/city.service';
+// import { CityModel } from 'src/app/Model/cityModel';
+import { RelayPoint } from 'src/app/Model/RelayPointModel';
+import { RelayPointService } from '../../services/relay-point.service';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import * as JsBarcode from 'jsbarcode';
+import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { DataService } from './data-service';
+import { Data } from './data.model';
+import { map, catchError } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { ApiService } from './api_service';
+import { CityService } from './city_service';
 import { CityModel } from './city_model';
 import jsPDF from 'jspdf';
 import { marker } from 'leaflet';
+//import * as XLSX from 'xlsx';
+
 
 
 
@@ -38,10 +40,10 @@ interface MarkerLabel {
     types: string[];
   }
 
-  @Component({
-    selector: 'app-adress-input',
-    templateUrl: './adress-input.component.html',
-    styleUrls: ['./adress-input.component.css'],
+@Component({
+  selector: 'app-adress-input',
+  templateUrl: './adress-input.component.html',
+  styleUrls: ['./adress-input.component.css'],
     
   })
 
@@ -70,7 +72,8 @@ panier: any[] = [];
     Total!: number ;
     Deliveryttc!: number ;
     Smsttc!: number;
-    typeExpedition!: string;
+    typeExpedition = 'À domicile';
+    typeSaisi!: string;
     typeLivraison!:string;
     poids!: number;
     adresse!: string;
@@ -257,7 +260,7 @@ panier: any[] = [];
     }
     
     geocodeAddress(address: string): Observable<any> {
-      const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyBqimHieAKQubjYTPyEiVhMx56kLMMQbeE`;
+      const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyCYem4TRq3aLW_r0nGuPyIm7aFYw4WyEKw`;
       return this.http.get<any>(geocodingApiUrl).pipe(
         map(response => {
           if (response.status === 'OK') {
@@ -357,6 +360,13 @@ panier: any[] = [];
         return null;
       });
     }
+    downloadExcel() {
+      const link = document.createElement('a');
+      link.href = 'assets/template.xlsx'; 
+      link.download = 'template.xlsx';
+      link.click();
+      link.remove();
+    }
      
     onSelectRelayPoint(selectedMarker: any): void {
       this.selectedRelayPointSource = selectedMarker;
@@ -410,7 +420,7 @@ panier: any[] = [];
     
     geocodeByStreet(quartier:any,ville:any) {
       const address = `${ville}, ${quartier}`;
-      const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyBqimHieAKQubjYTPyEiVhMx56kLMMQbeE`;
+      const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyCYem4TRq3aLW_r0nGuPyIm7aFYw4WyEKw`;
       this.http.get<any>(geocodingApiUrl).subscribe(data => {
         if (data.status === 'OK') {
           const location = data.results[0].geometry.location;
@@ -606,7 +616,7 @@ panier: any[] = [];
     }
 
     getCityFromCoordinates() {
-      const apiKey = 'AIzaSyAqlub2XWpn7MwqlN-gT1rAmyClo3YOJS4';
+      const apiKey = 'AIzaSyCYem4TRq3aLW_r0nGuPyIm7aFYw4WyEKw';
       const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.latitude},${this.longitude}&key=${apiKey}`;
 
       this.http.get(apiUrl)
@@ -688,9 +698,14 @@ panier: any[] = [];
       
     }
     onSubmit(formulaire: NgForm) {
-      if (formulaire.valid) {
-      this.toggleRows();
+      if (this.typeSaisi == 'Saisie manuel') {
+        if (formulaire.valid) {
+          this.toggleRows();
+          }
+      }else{
+        console.log('passssssssssssssss')
       }
+      
       
     }
     

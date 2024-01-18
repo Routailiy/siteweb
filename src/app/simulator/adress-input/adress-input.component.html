@@ -13,7 +13,40 @@
             
           <div class="col-sm-12 col-md-8 simulator-form" *ngIf="showFirstRow"  id="1">            
         <div class="row">
-
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100">
+            <span style="font-weight: bold;
+            color: #68c054;"><i class="fa-solid fa-arrow-right"></i>Je choisis le type de saisie</span>
+            <br/><br/>
+              <div class="d-flex">
+                <div class="form-check mr-5 " style="margin-right: 50px;">
+                  <input type="radio" class="form-check-input" id="pointRelais" name="typeEnvoi" [(ngModel)]="typeSaisi" value="Saisie manuel" required>
+                  <label class="form-check-label" for="pointRelais">Saisie manuel</label>
+                </div>
+              </div>
+              <div class="d-flex">
+                <div class="form-check mr-5 " style="margin-right: 50px;">
+                  <input type="radio" class="form-check-input" id="aDomicile" name="typeSaisi" [(ngModel)]="typeSaisi" value="Importation" required>
+                  <label class="form-check-label" for="aDomicile">Importation</label>
+                </div>
+              </div>
+          </div>
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100" *ngIf="typeSaisi=='Importation'">
+            <span style="font-weight: bold; color: #68c054;">
+              <i class="fa-solid fa-arrow-right"></i>
+              Merci de respecter le canva suivant:
+              &NonBreakingSpace;&NonBreakingSpace;
+              <i class="fa-solid fa-file-excel" (click)="downloadExcel()"></i>
+          </span>
+          
+            <br/><br/>
+              <div class="d-flex">
+                <div class="form-check mr-5 " style="margin-right: 50px;">
+                  <input class="form-control" type="file" id="formFile">
+                </div>
+              </div>
+             
+          </div>
+  
           <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="300">
           
             <!-- geolocation.component.html -->
@@ -28,7 +61,7 @@
                 <div *ngIf="formulaire.controls['villeSource']?.invalid && formulaire.controls['villeSource']?.touched" style="font-size: 12px;
                 font-weight: bold;
                 color: red;">
-                  Ville source est requise.
+                  Ville source est requise
                 </div>
               </div>
               <div class="form-group">
@@ -48,20 +81,7 @@
             </div>
           </div>    
           <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="400">
-            <h5>Destination</h5>
-            <div class="row">
-              <div class="col-6">
-                <div class="form-check mr-5 " style="margin-right: 50px;">
-                  <input type="radio" class="form-check-input" id="pointRelais" name="typeExpedition" [(ngModel)]="typeExpedition" value="Point de relais" required>
-                  <label class="form-check-label" for="pointRelais">Point de relais</label>
-                </div>
-              </div>
-              <div class="col-6">
-                <input type="radio" class="form-check-input" id="aDomicile" name="typeExpedition" [(ngModel)]="typeExpedition" value="À domicile" required>
-                <label class="form-check-label" for="aDomicile">À domicile</label>
-              </div>
-            </div>
-          
+            <h5>Destination</h5>       
             <div class = "f-5">
               <div class="form-group">
                 <label for="villeDestination">Ville destination*</label>
@@ -99,8 +119,25 @@
 Le poids ne doit pas excéder 20 kg.
                </div>
           </div>    
-        
-    
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100">
+            <span style="font-weight: bold;
+            color: #68c054;"><i class="fa-solid fa-arrow-right"></i>Je choisis le mode d'envoi</span>
+            <br/><br>
+            <div class="d-flex">
+                <div class="form-check mr-5 " style="margin-right: 50px;">
+                  <input type="radio" class="form-check-input" id="Standard" name="typeLivraison" [(ngModel)]="typeLivraison" value="Standard" required>
+                  <label class="form-check-label" for="typeLivraison">Standard</label>
+                </div>
+              </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" id="Recommandé" name="typeLivraison" [(ngModel)]="typeLivraison" value="Recomandé" required>
+              <label class="form-check-label" for="typeLivraison">Recommandé</label>
+            </div>
+          </div>
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="200" *ngIf="typeLivraison=='Recomandé'">
+            <label for="poids">Carte d'identité national </label>
+            <input type="text" class="form-control" id="CIN" name="CIN" value="CIN" placeholder="Carte d'identité national" [(ngModel)]="CIN" required>
+          </div>  
           <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100">
             <span style="font-weight: bold;
             color: #68c054;"><i class="fa-solid fa-arrow-right"></i> Option d'envoi</span>
@@ -280,7 +317,13 @@ Le poids ne doit pas excéder 20 kg.
           
           <ul>
             <li>
+              <p><i class="fa-solid fa-terminal"></i>Type Saisie : <span *ngIf="typeSaisi" class="options">{{typeSaisi}}</span></p>
+            </li>
+            <li>
               <p><i class="fas fa-store"></i>Type d'expédition : <span *ngIf="typeExpedition" class="options">{{typeExpedition}}</span></p>
+            </li>
+            <li>
+              <p><i class="fa-solid fa-truck-ramp-box"></i>Mode d'envoi : <span *ngIf="typeExpedition" class="options">{{typeLivraison}}</span></p>
             </li>
             <li>
               <p><i class="fas fa-weight"></i> Poids :<span *ngIf="poids" class="options">{{poids}} KG</span> </p>
@@ -355,12 +398,12 @@ Le poids ne doit pas excéder 20 kg.
           </div>
             </li>
           </div>
-          <div *ngIf="typeExpedition === 'À domicile'" class="selectedSource">
+          <div *ngIf="villeDestination" class="selectedSource">
             <li style="margin-top: 5%;">
             <h4>Adresse de destination</h4>
             <br/>
-            <p class="adress"> <i class="fas fa-map-marker-alt"></i>{{ villeDestination }}</p>
-            <p class="adress"> <i class="fas fa-map-marker-alt"></i>{{ NumeroQuartier }} {{ quartierDestination }} {{ AdressDes }}</p>
+            <p class="adress" *ngIf="villeDestination"> <i class="fas fa-map-marker-alt"></i>{{ villeDestination }}</p>
+            <p class="adress" *ngIf="NumeroQuartier"> <i class="fas fa-map-marker-alt"></i>{{ NumeroQuartier }} {{ quartierDestination }} {{ AdressDes }}</p>
             
             
             </li>
@@ -372,7 +415,7 @@ Le poids ne doit pas excéder 20 kg.
     </div>
 
 
-    <button type="submit" class="btn btn-primary" (click)="onSubmit(formulaire)" *ngIf="showFirstRow"  [disabled]="!formulaire.valid" style="border: none;
+    <button type="submit" class="btn btn-primary" (click)="onSubmit(formulaire)" *ngIf="showFirstRow"   style="border: none;
     border-radius: 9%;
     width: 160px;">Continuer</button> 
              <div *ngIf="!showFirstRow" >

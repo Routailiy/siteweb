@@ -82,6 +82,28 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="LoginC2C" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content auth-card">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="login-form" (ngSubmit)="login(loginEmail.value, loginPassword.value)">
+          <div class="form-group">
+            <input type="email" #loginEmail class="form-control" placeholder="Email address" required autofocus>
+          </div>
+          <div class="form-group">
+            <input type="password" #loginPassword class="form-control" placeholder="Password" required>
+          </div>
+          <div *ngIf="loginError" class="alert alert-danger">{{ loginError }}</div>
+          <button class="btn btn-primary auth-submit" type="submit">Login</button>
+        </form>
+      </div>   
+    </div>
+  </div>
+</div>
 
 
 <!-- End Hero Section -->
