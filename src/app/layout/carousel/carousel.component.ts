@@ -9,18 +9,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./carousel.component.css']
 })
 export class CarouselComponent {
+  adress!: string;
+  @Input() trackingData: TrackingInfo[] = [];
+  loginError: string = '';
+
   constructor(private authService: AuthService, private router: Router) {}
 
-adress!:string;
-@Input() trackingData: TrackingInfo[] = [];
-onTrackingDataReceived(trackingData: TrackingInfo[]) {
-  this.trackingData = trackingData;
-}
-addAdress(event:string){
-   this.adress=event;
+  onTrackingDataReceived(trackingData: TrackingInfo[]) {
+    this.trackingData = trackingData;
   }
-  loginError: string = '';
-  
+
+  addAdress(event: string) {
+    this.adress = event;
+  }
+
   login(email: string, password: string) {
     this.loginError = '';
     if (!email || !password) {
@@ -30,13 +32,17 @@ addAdress(event:string){
 
     this.authService.login({ username: email, password: password }).subscribe(
       success => {
+        this.authService.setUserName(success.name);
+        localStorage.setItem('name', success.name); // ou sessionStorage
+        this.authService.setUserName(success.uid);
+        localStorage.setItem('uid', success.uid); // ou sessionStorage
         this.router.navigate(['/simulateur']);
+        console.log(success);
       },
       error => {
         this.loginError = 'Invalid credentials';
         console.error(error);
       }
     );
-}
-
+  }
 }

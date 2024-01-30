@@ -192,4 +192,78 @@
     background-color: var(--green);
     color: white;
   }
- 
+  .map-content .modal-content {
+    background-color: #fff;
+    color: #333;
+    border-radius: 8px;
+  }
+  
+  .cart-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .item-header {
+    display: flex;
+    align-items: center;
+  }
+  
+  .item-icon {
+    font-size: 30px;
+    color: #f7e164;
+    margin-right: 10px;
+  }
+  
+  .item-name {
+    font-weight: bold;
+  }
+  .item-body {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .item-detail {
+    color: #555;
+  }
+  
+  .item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .item-total {
+    font-weight: bold;
+    color: #68c054;
+  }
+  
+  .item-delete {
+    font-size: 20px;
+    color: #ff0707;
+    cursor: pointer;
+  }
+  
+  .total-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .total-label {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: black;
+    margin-right: 10px;
+  }
+  
+  .total-amount {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #ff0707;
+  }
+  

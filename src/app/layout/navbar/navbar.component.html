@@ -48,11 +48,14 @@
               <!-- </li> -->
             <!-- </ul> -->
           </li>
-          <li class="nav-item" >
-            <a class="nav-link scrollto" data-bs-toggle="modal" data-bs-target="#LoginC2C">Envoi en ligne</a>
+          <li class="nav-item" *ngIf="name" >
+            <a class="nav-link scrollto" routerLink="/simulateur" >Envoi en ligne</a>
           </li>
-          <li class="nav-item get-started-btn">
-            <a class="nav-link scrollto"href="https://www.sapresslogistics.ma/web/login?">Espace pro</a>
+          <li class="nav-item">
+            <a class="nav-link scrollto" href="https://support.sapresslogistics.ma/hc/fr/requests/new" target="_blank">
+              <i class="bi bi-person-lines-fill custom-icon"></i>
+              Contactez nous
+            </a>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto">
@@ -60,12 +63,24 @@
             <a class="nav-link scrollto " href="https://support.sapresslogistics.ma/hc/fr" target="_blank">
               <i class="bi bi-question-square-fill custom-icon"></i>FAQ</a>
           </li>
-            <li class="nav-item">
-              <a class="nav-link scrollto" href="https://support.sapresslogistics.ma/hc/fr/requests/new" target="_blank">
+            <li class="nav-item" *ngIf="name==''">
+              <a class="nav-link scrollto" data-bs-toggle="modal" data-bs-target="#LoginC2C" target="_blank">
                 <i class="bi bi-person-lines-fill custom-icon"></i>
-                Contactez nous
+               Espace C2C
               </a>
             </li>
+            <li class="nav-item dropdown ">
+              <!-- </li> -->
+              <!-- <li class="dropdown"> -->
+                <a class="parentLink" href="#logistic_services" *ngIf="name">
+                  <span><i class="fa-solid fa-user" style="font-size: 17px;"></i>&NonBreakingSpace;{{ name }}</span> <i class="bi bi-chevron-down"></i>
+                </a>
+                <ul> 
+                  <li><a (click)="logout()"><i class="fa-solid fa-right-from-bracket" style="font-size: 17px;"></i> Deconnecter</a></li>
+                </ul>
+              <!-- </li> -->
+            <!-- </ul> -->
+          </li>
         </ul>
       </div>
     </nav>      

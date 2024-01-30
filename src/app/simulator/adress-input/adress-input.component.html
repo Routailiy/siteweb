@@ -4,10 +4,12 @@
     <div class="col-md-12">  
       <!-- Simulator form -->
    
-          <h1 class="main-title" data-aos="fade-up"><i class="fa-solid fa-cube f-4" data-aos="zoom-in" data-aos-delay="200" data-aos-duration="500"></i>Simuler l'envoi de mon colis   <a href="#" data-bs-toggle="modal" data-bs-target="#PanierModal" style="">
+      <h1 class="main-title" data-aos="fade-up"><i class="fa-solid fa-cube f-4" data-aos="zoom-in" data-aos-delay="200" data-aos-duration="500"></i>Simuler l'envoi de mon colis
+           <a href="#" data-bs-toggle="modal" data-bs-target="#PanierModal">
             <i class="fa-solid fa-basket-shopping" style="color: #fbe254; font-size: 44px;"></i>
             <span style="color: red; font-weight: bold;">{{ panier.length }}</span>
-        </a>              </h1>
+        </a>             
+       </h1>
           <form (ngSubmit)="onSubmit(formulaire)" #formulaire="ngForm" (change)="showPrice()" >
             <div class="row">
             
@@ -30,33 +32,47 @@
                 </div>
               </div>
           </div>
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100" *ngIf="typeSaisi=='Saisie manuel'">
+            <span style="font-weight: bold;
+            color: #68c054;"><i class="fa-solid fa-arrow-right"></i>Je choisis le type paiement</span>
+            <br/><br/>
+              <div class="d-flex">
+                <div class="form-check mr-5 " style="margin-right: 50px;">
+                  <input type="radio" class="form-check-input" id="paiement_type" name="paiement_type" [(ngModel)]="paiement_type" value="port du" required>
+                  <label class="form-check-label" for="paiement_type">Port du</label>
+                </div>
+              </div>
+              <div class="d-flex">
+                <div class="form-check mr-5 " style="margin-right: 50px;">
+                  <input type="radio" class="form-check-input" id="paiement_type" name="paiement_type" [(ngModel)]="paiement_type" value="port payé" required>
+                  <label class="form-check-label" for="paiement_type">Port payé</label>
+                </div>
+              </div>
+          </div>
           <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100" *ngIf="typeSaisi=='Importation'">
             <span style="font-weight: bold; color: #68c054;">
               <i class="fa-solid fa-arrow-right"></i>
               Merci de respecter le canva suivant:
               &NonBreakingSpace;&NonBreakingSpace;
-              <i class="fa-solid fa-file-excel" (click)="downloadExcel()"></i>
+              <i class="fa-solid fa-file-excel" (click)="downloadExcel()" style="font-size: 25px;"></i>
           </span>
           
             <br/><br/>
               <div class="d-flex">
                 <div class="form-check mr-5 " style="margin-right: 50px;">
-                  <input class="form-control" type="file" id="formFile">
+                  <input class="form-control" type="file" id="fileInput" #fileInput>
                 </div>
+                <button type="submit" class="btn btn-primary mb-2" (click)="importFile()" data-bs-toggle="modal" data-bs-target="#PanierModal">Importer</button>
               </div>
              
           </div>
   
-          <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="300">
-          
-            <!-- geolocation.component.html -->
+          <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="300">          
             <h5>Expédition</h5>
             <div class="f-5">    
            <div class="form-group">
-                <label for="villeSource">Ville source* </label><a (click)="getLocation()" style="    color: #73c561;
-                font-size: 17px;
-                font-weight: bold;cursor: grab;">
-                  <i class="fas fa-map-marker-alt" style="    color: #73c561;font-size: 18px;"> </i></a>
+                <label for="villeSource">Ville source* </label><a (click)="getLocation()" style="color: #73c561;font-size: 17px;font-weight: bold;cursor: grab;">
+                  <i class="fas fa-map-marker-alt" style="color: #73c561;font-size: 18px;"> </i></a>
                 <input class="form-control" type="text" [(ngModel)]="villeSource" name="villeSource" (ngModelChange)="onAddressChange()" required>
                 <div *ngIf="formulaire.controls['villeSource']?.invalid && formulaire.controls['villeSource']?.touched" style="font-size: 12px;
                 font-weight: bold;
@@ -80,7 +96,7 @@
             </a>
             </div>
           </div>    
-          <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="400">
+          <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="400" *ngIf="typeSaisi=='Saisie manuel'">
             <h5>Destination</h5>       
             <div class = "f-5">
               <div class="form-group">
@@ -102,7 +118,6 @@
                 </div>
                 
               </div>
-               <!-- Button trigger popup destination -->
             <a  href="#" data-bs-toggle="modal" data-bs-target="#destinationModal" (click)="geocodeByStreet(villeDestination, quartierDestination)" *ngIf="quartierDestination && villeDestination && typeExpedition=='Point de relais'">
                <i class="fas fa-map-marker-alt"></i>
               Trouver un point relais
@@ -110,7 +125,7 @@
             </div>
            
           </div>
-          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="200">
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="200" *ngIf="typeSaisi=='Saisie manuel'">
             <label for="poids">Je saisis le poids de mon colis (kg) </label>
             <input type="number" min="0" max="20" class="form-control" id="poids" name="poids" value="poids" placeholder="le poids de mon colis" [(ngModel)]="poids" required>
             <div *ngIf="formulaire.controls['poids']?.invalid && formulaire.controls['poids']?.touched" style="font-size: 12px;
@@ -119,7 +134,7 @@
 Le poids ne doit pas excéder 20 kg.
                </div>
           </div>    
-          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100">
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100" *ngIf="typeSaisi=='Saisie manuel'">
             <span style="font-weight: bold;
             color: #68c054;"><i class="fa-solid fa-arrow-right"></i>Je choisis le mode d'envoi</span>
             <br/><br>
@@ -130,15 +145,15 @@ Le poids ne doit pas excéder 20 kg.
                 </div>
               </div>
             <div class="form-check">
-              <input type="radio" class="form-check-input" id="Recommandé" name="typeLivraison" [(ngModel)]="typeLivraison" value="Recomandé" required>
+              <input type="radio" class="form-check-input" id="Recommandé" name="typeLivraison" [(ngModel)]="typeLivraison" value="Recommandé" required>
               <label class="form-check-label" for="typeLivraison">Recommandé</label>
             </div>
           </div>
-          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="200" *ngIf="typeLivraison=='Recomandé'">
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="200" *ngIf="typeLivraison=='Recommandé'">
             <label for="poids">Carte d'identité national </label>
             <input type="text" class="form-control" id="CIN" name="CIN" value="CIN" placeholder="Carte d'identité national" [(ngModel)]="CIN" required>
           </div>  
-          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100">
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100" *ngIf="typeSaisi=='Saisie manuel'">
             <span style="font-weight: bold;
             color: #68c054;"><i class="fa-solid fa-arrow-right"></i> Option d'envoi</span>
             <br/><br/>
@@ -189,21 +204,11 @@ Le poids ne doit pas excéder 20 kg.
       <div class="f-5">
         <div class="form-group">
           <label for="villeSource"></label>
-          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="expediteur_name" [(ngModel)]="expediteur_name" placeholder="Nom....">
+          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="expediteur_name" [(ngModel)]="expediteur_name" placeholder="Nom complet....">
           <div *ngIf="formulaire.controls['expediteur_name']?.invalid && formulaire.controls['expediteur_name']?.touched" style="font-size: 12px;
           font-weight: bold;
           color: red;">
             Nom est requise.
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="quartierSource"></label>
-          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Prénom...." name="expediteur_prenom" [(ngModel)]="expediteur_prenom">
-          <div *ngIf="formulaire.controls['expediteur_prenom']?.invalid && formulaire.controls['expediteur_prenom']?.touched" style="font-size: 12px;
-          font-weight: bold;
-          color: red;">
-            Prénom est requise.
           </div>
         </div>
         <div class="form-group">
@@ -228,21 +233,11 @@ Le poids ne doit pas excéder 20 kg.
       <div class="f-5">
         <div class="form-group">
           <label for="villeSource"></label>
-          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nom...." name="destinataire_name" [(ngModel)]="destinataire_name">
+          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nom complet...." name="destinataire_name" [(ngModel)]="destinataire_name">
           <div *ngIf="formulaire.controls['destinataire_name']?.invalid && formulaire.controls['destinataire_name']?.touched" style="font-size: 12px;
           font-weight: bold;
           color: red;">
             Nom est requise.
-          </div>
-        </div>
-
-        <div class="form-group" >
-          <label for="quartierSource"></label>
-          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Prénom...." name="destinataire_prenom" [(ngModel)]="destinataire_prenom">
-          <div *ngIf="formulaire.controls['destinataire_name']?.invalid && formulaire.controls['destinataire_name']?.touched" style="font-size: 12px;
-          font-weight: bold;
-          color: red;">
-            Prénom est requise.
           </div>
         </div>
         <div class="form-group">
@@ -316,6 +311,7 @@ Le poids ne doit pas excéder 20 kg.
          
           
           <ul>
+      
             <li>
               <p><i class="fa-solid fa-terminal"></i>Type Saisie : <span *ngIf="typeSaisi" class="options">{{typeSaisi}}</span></p>
             </li>
@@ -619,21 +615,22 @@ Le poids ne doit pas excéder 20 kg.
       </div>
       <div class="modal-body">
         <div class="container-fluid">
-          <!-- Boucle sur les éléments du panier -->
           <div class="cart-item" *ngFor="let item of panier; let i = index">
             <div class="item-header">
               <i class="fa-solid fa-box-open item-icon"></i>
               <span class="item-name">{{ item.dest_name }} {{ item.dest_prenom }}</span>
+
             </div>
             <div class="item-body">
               <span class="item-detail">{{ item.type_expedition }}</span>
               <span class="item-detail">{{ item.poids }} kg</span>
-              <span class="item-detail">{{ item.Total }} MAD</span>
-              <!-- Autres détails... -->
+              <span class="item-detail">{{ ((item.additionalAmount ? item.additionalAmount : 0) * 0.8 / 100).toFixed(2) || 0 }} MAD</span>
+              <span class="item-detail">{{ ((item.AssuranceAmount ? item.AssuranceAmount : 0) * 0.5 / 100).toFixed(2)  || 0  }} MAD</span>
+              <span class="item-detail">{{ item.prix  || 0 }} MAD</span>
+              <span class="item-detail">{{ (item.Total || item.Total2).toFixed(2)}} MAD</span>
             </div>
             <div class="item-footer">
               <span class="item-total"></span>
-
               <i class="fa-solid fa-trash item-delete" (click)="supprimerDuPanier(i)" *ngIf="showFirstButton"></i>
             </div>
           </div>
@@ -644,90 +641,18 @@ Le poids ne doit pas excéder 20 kg.
           <span class="total-amount">{{ getTotalPanier() }} MAD</span>
         </div>
       </div>
-    </div>
+      
+           <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" style="background-color: #f7e164;
+            color: #6cbf44;border: none;font-weight: bold;" (click)="downloadAsPDF()">Récuperer mon code d'envoi</button>
+      
+          </div> 
+  </div>
   </div>
 </div>
 
 
   </div>
-  <style>
-  .map-content .modal-content {
-  background-color: #fff;
-  color: #333;
-  border-radius: 8px;
-}
-
-.cart-item {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  padding: 10px;
-  background-color: #f9f9f9;
-}
-
-.item-header {
-  display: flex;
-  align-items: center;
-}
-
-.item-icon {
-  font-size: 30px;
-  color: #f7e164;
-  margin-right: 10px;
-}
-
-.item-name {
-  font-weight: bold;
-}
-
-.item-body {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.item-detail {
-  color: #555;
-}
-
-.item-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.item-total {
-  font-weight: bold;
-  color: #68c054;
-}
-
-.item-delete {
-  font-size: 20px;
-  color: #ff0707;
-  cursor: pointer;
-}
-
-.total-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-
-.total-label {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: black;
-  margin-right: 10px;
-}
-
-.total-amount {
-  font-size: 1.4em;
-  font-weight: bold;
-  color: #ff0707;
-}
-
-  </style>
 </div>
 
         
@@ -735,9 +660,7 @@ Le poids ne doit pas excéder 20 kg.
           
           
           
-          
-          
-          
+      
           
           
           
