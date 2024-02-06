@@ -36,7 +36,7 @@ export class CarouselComponent {
         localStorage.setItem('name', success.name); // ou sessionStorage
         this.authService.setUserName(success.uid);
         localStorage.setItem('uid', success.uid); // ou sessionStorage
-        this.router.navigate(['/simulateur']);
+        window.location.href = 'index.html'; 
         console.log(success);
       },
       error => {
