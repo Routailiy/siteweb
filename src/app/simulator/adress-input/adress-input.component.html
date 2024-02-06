@@ -62,7 +62,6 @@
                 <div class="form-check mr-5 " style="margin-right: 50px;">
                   <input class="form-control" type="file" id="fileInput" #fileInput>
                 </div>
-                <button type="submit" class="btn btn-primary mb-2" (click)="importFile()" data-bs-toggle="modal" data-bs-target="#PanierModal">Importer</button>
               </div>
              
           </div>
@@ -411,11 +410,11 @@ Le poids ne doit pas excéder 20 kg.
     </div>
 
 
-    <button type="submit" class="btn btn-primary" (click)="onSubmit(formulaire)" *ngIf="showFirstRow"   style="border: none;
+    <button type="submit" class="btn btn-primary" (click)="onSubmit(formulaire)" *ngIf="showFirstRow && typeSaisi=='Saisie manuel'"   style="border: none;
     border-radius: 9%;
     width: 160px;">Continuer</button> 
+                    <button type="submit" class="btn btn-primary mb-2" (click)="importFile()" *ngIf="showFirstRow  && typeSaisi=='Importation'" data-bs-toggle="modal" data-bs-target="#PanierModal">Importer</button>
              <div *ngIf="!showFirstRow" >
-              <!-- Button to generate a random 10-digit barcode -->
               <button type="submit" class="btn btn-primary"  (click)="BackRows()" *ngIf="!showFirstRow" style="border: none;
               border-radius: 9%;
               width: 160px;"> <i class="fa-solid fa-backward"></i> Retour</button> &NonBreakingSpace;&NonBreakingSpace; 
@@ -425,8 +424,8 @@ Le poids ne doit pas excéder 20 kg.
             border-radius: 9%;
             width: 160px;" *ngIf="showFirstButton" (click)="Paniertocodebarre()">Ajouter autre</button>
              
-                <button type="submit" class="btn btn-primary" style="background-color: #104533;
-    color: #6cbf44;border: none;" *ngIf="!showFirstButton" href="/simulateur" (click)="downloadBarcodeAsPDF()"  >Télécharger mon code <i class="fa-solid fa-cloud-arrow-down"></i></button>
+                <!-- <button type="submit" class="btn btn-primary" style="background-color: #104533;
+    color: #6cbf44;border: none;" *ngIf="!showFirstButton" href="/simulateur" (click)="downloadBarcodeAsPDF()"  >Télécharger mon code <i class="fa-solid fa-cloud-arrow-down"></i></button> -->
               </div>
             </form>
 
@@ -618,14 +617,14 @@ Le poids ne doit pas excéder 20 kg.
           <div class="cart-item" *ngFor="let item of panier; let i = index">
             <div class="item-header">
               <i class="fa-solid fa-box-open item-icon"></i>
-              <span class="item-name">{{ item.dest_name }} {{ item.dest_prenom }}</span>
+              <span class="item-name">{{ item.dest_name }}</span>
 
             </div>
             <div class="item-body">
               <span class="item-detail">{{ item.type_expedition }}</span>
               <span class="item-detail">{{ item.poids }} kg</span>
-              <span class="item-detail">{{ ((item.additionalAmount ? item.additionalAmount : 0) * 0.8 / 100).toFixed(2) || 0 }} MAD</span>
-              <span class="item-detail">{{ ((item.AssuranceAmount ? item.AssuranceAmount : 0) * 0.5 / 100).toFixed(2)  || 0  }} MAD</span>
+              <span class="item-detail">{{ ((item.contre_remboursement ? item.contre_remboursement : 0) * 0.8 / 100).toFixed(2) || 0 }} MAD</span>
+              <span class="item-detail">{{ ((item.assurance ? item.assurance : 0) * 0.5 / 100).toFixed(2)  || 0  }} MAD</span>
               <span class="item-detail">{{ item.prix  || 0 }} MAD</span>
               <span class="item-detail">{{ (item.Total || item.Total2).toFixed(2)}} MAD</span>
             </div>
@@ -643,9 +642,10 @@ Le poids ne doit pas excéder 20 kg.
       </div>
       
            <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" style="background-color: #f7e164;
-            color: #6cbf44;border: none;font-weight: bold;" (click)="downloadAsPDF()">Récuperer mon code d'envoi</button>
-      
+            <!-- <button type="submit" class="btn btn-primary" style="background-color: #f7e164;
+            color: #6cbf44;border: none;font-weight: bold;" (click)="downloadAsPDF()">Récuperer mon code d'envoi</button> -->
+      <button type="submit" class="btn btn-primary" style="background-color: #f7e164;
+      color: #6cbf44;border: none;font-weight: bold;" (click)="envoyerDonneesDuPanier()">Récuperer mon code d'envoi</button>
           </div> 
   </div>
   </div>

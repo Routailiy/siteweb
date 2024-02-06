@@ -34,7 +34,7 @@ interface MarkerLabel {
 interface LigneDonnees {
   destinataire_name: string;
   destinataire_phone: string;
-  CIN: string;
+  cin: string;
   villeDestination: string;
   NumeroQuartier: string;
   quartierDestination: string;
@@ -48,6 +48,7 @@ interface LigneDonnees {
   AssuranceAmount: number;
   price?: number;
   barcodeImage?: string;
+  payment: string;
 }
 
 
@@ -276,19 +277,19 @@ interface LigneDonnees {
       console.log('Panier après ajout:', this.panier);
     }
     
-    // envoyerDonneesDuPanier() {
-    //   this.panier.forEach(item => {
-    //     this.apiService.createData(item).subscribe({
-    //       next: (response) => {
-    //         console.log('Données envoyées avec succès:', response);
-    //       },
-    //       error: (error) => {
-    //         console.error('Erreur lors de l\'envoi des données:', error);
-    //       }
-    //     });
-    //   });    
-    //   this.panier = [];
-    // }
+    envoyerDonneesDuPanier() {
+      this.downloadAsPDF();
+      this.panier.forEach(item => {
+        this.apiService.createData(item).subscribe({
+          next: (response) => {
+            console.log('Données envoyées avec succès:', response);
+          },
+          error: (error) => {
+            console.error('Erreur lors de l\'envoi des données:', error);
+          }
+        });
+      });    
+    }
     
     
     Paniertocodebarre(){
@@ -323,7 +324,7 @@ onFileChange(evt: any) {
           const ligne: LigneDonnees = {
             destinataire_name: row[0],
             destinataire_phone: row[1],
-            CIN: row[2],
+            cin: row[2],
             villeDestination: row[3],
             NumeroQuartier: row[4],
             quartierDestination: row[5],
@@ -336,6 +337,7 @@ onFileChange(evt: any) {
             additionalAmount: row[10] === 'Aucun' ? 0 : row[11],
             showAmountInput2: row[12] !== null && row[12] !== undefined && row[12] !== '',
             AssuranceAmount: row[12] ? row[12] : 0, 
+            payment:row[13],
           };
           acc.push(ligne);
         }
@@ -459,7 +461,8 @@ onFileChange(evt: any) {
     }
     
     geocodeAddress(address: string): Observable<any> {
-      const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyDUPndHBosBn7HuEdZ5dWmJptcrMKgkHXg`;
+      const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyAbJ7vrB0RN0EXjRpIcGXwPXTTv5mNdMIs
+      `;
       return this.http.get<any>(geocodingApiUrl).pipe(
         map(response => {
           if (response.status === 'OK') {
@@ -525,6 +528,7 @@ onFileChange(evt: any) {
         type_expedition: this.typeExpedition,
         ville_source: this.villeSource,
         price : this.price,
+        type_livraison: this.typeLivraison,
         quartier_source: this.adresseDetaillee,
         relay_name_exp : this.selectedRelayPointSource?.agence,
         relay_code_exp : this.selectedRelayPointSource?.code_es,
@@ -535,17 +539,19 @@ onFileChange(evt: any) {
         ville_destination: this.villeDestination,
         quartier_destination: this.NumeroQuartier + this.quartierDestination + this.adressDestination,
         poids: this.poids,
-        additionalAmount: this.additionalAmount,
-        AssuranceAmount: this.AssuranceAmount,
+        contre_remboursement: this.additionalAmount,
+        assurance: this.AssuranceAmount,
         exp_name: this.expediteur_name,
         exp_phone: this.expediteur_phone,
-        exp_email: this.expediteur_email,
+        exp_email: this.expediteur_email || false,
         dest_name: this.destinataire_name,
         dest_phone: this.destinataire_phone,
-        dest_email: this.destinataire_email,
+        dest_email: this.destinataire_email || false,
         prix : this.price,
         Total: this.calculateTotal(),
         code: this.code,
+        cin : this.CIN,
+        payment:this.paiement_type,
         barcode: this.barcode,
         uid: this.uid
       };
@@ -563,24 +569,29 @@ onFileChange(evt: any) {
       return {
         date_traitement: isoString, 
         ville_source: donnees.villeSource || this.villeSource,
+        quartier_source: donnees.villeSource || this.adresseDetaillee,
         ville_destination: donnees.villeDestination || this.villeDestination,
+        relay_name_exp : this.selectedRelayPointSource?.agence  || false,
+        relay_code_exp : this.selectedRelayPointSource?.code_es  || false,
+        relay_adress_exp : this.selectedRelayPointSource?.Adresse  || false,
         poids: donnees.poids || this.poids,
         type_expedition: donnees.typeExpedition || this.typeExpedition,
         type_livraison: donnees.typeLivraison || this.typeLivraison,
         exp_name: donnees.exp_name || this.expediteur_name,
-        exp_phone: donnees.exp_phone || this.expediteur_phone,
-        exp_email: donnees.exp_email || this.expediteur_email,
+        exp_phone: donnees.exp_phone || this.expediteur_phone || '0600000000',
+        exp_email: donnees.exp_email || this.expediteur_email  || false,
         dest_name: donnees.destinataire_name || this.destinataire_name,
-        dest_prenom: donnees.destinataire_prenom || this.destinataire_prenom,
-        dest_phone: donnees.destinataire_phone || this.destinataire_phone,
-        dest_email: donnees.destinataire_email || this.destinataire_email,
+        dest_prenom: donnees.destinataire_prenom || this.destinataire_prenom || false,
+        dest_phone: donnees.destinataire_phone || this.destinataire_phone || false,
+        dest_email: donnees.destinataire_email || this.destinataire_email || false,
         prix : prix,
-        CIN: donnees.CIN || this.CIN,
-        NumeroQuartier: donnees.NumeroQuartier || this.NumeroQuartier,
-        quartier_destination: donnees.quartierDestination || this.NumeroQuartier + this.quartierDestination + this.adressDestination,
+        cin: donnees.cin || this.CIN,
+        payment: donnees.payment || this.paiement_type,
+        NumeroQuartier: donnees.NumeroQuartier || this.NumeroQuartier || false,
+        quartier_destination: donnees.quartierDestination || this.NumeroQuartier + this.quartierDestination + this.adressDestination || false,
         AdressDes: donnees.AdressDes || this.AdressDes,
-        additionalAmount: additionalAmount,
-        AssuranceAmount: AssuranceAmount,
+        contre_remboursement: additionalAmount,
+        assurance: AssuranceAmount,
         Total2: total || 0, 
         Total: this.calculateTotal() || 0,
         code: this.code || donnees.code,
@@ -608,6 +619,7 @@ onFileChange(evt: any) {
         return null;
       });
     }
+
     downloadExcel() {
       const link = document.createElement('a');
       link.href = 'assets/template.xlsx'; 
@@ -656,7 +668,7 @@ onFileChange(evt: any) {
     
     geocodeByStreet(quartier:any,ville:any) {
       const address = `${ville}, ${quartier}`;
-      const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyDUPndHBosBn7HuEdZ5dWmJptcrMKgkHXg`;
+      const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyAbJ7vrB0RN0EXjRpIcGXwPXTTv5mNdMIs`;
       this.http.get<any>(geocodingApiUrl).subscribe(data => {
         if (data.status === 'OK') {
           const location = data.results[0].geometry.location;
@@ -846,7 +858,7 @@ onFileChange(evt: any) {
       }
     }
     getCityFromCoordinates() {
-      const apiKey = 'AIzaSyDUPndHBosBn7HuEdZ5dWmJptcrMKgkHXg';
+      const apiKey = 'AIzaSyAbJ7vrB0RN0EXjRpIcGXwPXTTv5mNdMIs';
       const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.latitude},${this.longitude}&key=${apiKey}`;
 
       this.http.get(apiUrl)
@@ -884,7 +896,6 @@ onFileChange(evt: any) {
     }
     
     ngAfterViewInit(): void{
-      // Create your form group here
       this.formulaire = new FormGroup({
         typeExpedition: new FormControl(''),
         typeLivraison: new FormControl(''),
@@ -995,7 +1006,7 @@ showPrice() {
       }
     }
     downloadAsPDF() {
-        // this.envoyerDonneesDuPanier();
+      // this.envoyerDonneesDuPanier();
       this.showFirstButton = !this.showFirstButton;
       this.showFirstRow = !this.showFirstRow;
 
