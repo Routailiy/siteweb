@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private loginUrl = 'http://127.0.0.1:5000/login';
+  private loginUrl = 'http://15.236.106.217:5000/login';
   private userName = new BehaviorSubject<string>('');
   router: any;
 

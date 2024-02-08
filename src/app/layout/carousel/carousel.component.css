@@ -138,13 +138,13 @@
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: #68c054;
   color: white;
   cursor: pointer;
 }
 
 .btn-primary.auth-submit:hover {
-  background-color: #0056b3;
+  background-color: #e2c72e;
 }
 
 .alert-danger {

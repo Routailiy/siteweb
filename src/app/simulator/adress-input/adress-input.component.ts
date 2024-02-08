@@ -153,10 +153,10 @@ interface LigneDonnees {
     monFormulaire!: FormGroup;
     mapUrl!: string;
 
-  additionalMarkerData: any[] = []; // Un tableau pour stocker des données supplémentaires
+  additionalMarkerData: any[] = []; 
     constructor(private route: ActivatedRoute,private cityService: CityService,private relayPointService: RelayPointService, private http: HttpClient,private dataService: DataService,private changeDetectorRef: ChangeDetectorRef,private apiService: ApiService,private cdr: ChangeDetectorRef,private authService: AuthService) {
       const currentDate = new Date();
-      currentDate.setHours(currentDate.getHours() + 1); // Ajustement pour GMT+1
+      currentDate.setHours(currentDate.getHours() + 1);
       const isoString = currentDate.toISOString().substring(0, 16);
 
       this.form = new FormGroup({
@@ -482,7 +482,7 @@ onFileChange(evt: any) {
       const date = new Date(selectedDate);
       const hours = date.getHours();
       let deliveryDates = [];
-      if (hours < 12) {
+      if (hours < 0) {
         deliveryDates.push(new Date(date)); 
       } else {
         let tempDate = new Date(date);
@@ -537,7 +537,7 @@ onFileChange(evt: any) {
         relay_code_dest: this.selectedRelayPointSource2?.code_es,
         relay_adress_dest: this.selectedRelayPointSource2?.Adresse,
         ville_destination: this.villeDestination,
-        quartier_destination: this.NumeroQuartier + this.quartierDestination + this.adressDestination,
+        quartier_destination: this.NumeroQuartier + " " + this.quartierDestination + " " + this.AdressDes,
         poids: this.poids,
         contre_remboursement: this.additionalAmount,
         assurance: this.AssuranceAmount,
@@ -578,7 +578,7 @@ onFileChange(evt: any) {
         type_expedition: donnees.typeExpedition || this.typeExpedition,
         type_livraison: donnees.typeLivraison || this.typeLivraison,
         exp_name: donnees.exp_name || this.expediteur_name,
-        exp_phone: donnees.exp_phone || this.expediteur_phone || '0600000000',
+        exp_phone: donnees.exp_phone || this.expediteur_phone || false,
         exp_email: donnees.exp_email || this.expediteur_email  || false,
         dest_name: donnees.destinataire_name || this.destinataire_name,
         dest_prenom: donnees.destinataire_prenom || this.destinataire_prenom || false,
@@ -588,7 +588,7 @@ onFileChange(evt: any) {
         cin: donnees.cin || this.CIN,
         payment: donnees.payment || this.paiement_type,
         NumeroQuartier: donnees.NumeroQuartier || this.NumeroQuartier || false,
-        quartier_destination: donnees.quartierDestination || this.NumeroQuartier + this.quartierDestination + this.adressDestination || false,
+        quartier_destination: donnees.quartierDestination ||  this.NumeroQuartier + " " + this.quartierDestination + " " + this.AdressDes || false,
         AdressDes: donnees.AdressDes || this.AdressDes,
         contre_remboursement: additionalAmount,
         assurance: AssuranceAmount,
@@ -825,12 +825,9 @@ onFileChange(evt: any) {
     showFirstButton: boolean = true;
 
     toggleVisibility() {
-          this.showFirstButton = !this.showFirstButton;
-          this.generateNewCode();
-           this.ajouterAuPanier();
-        
-          
-        
+      this.ajouterAuPanier();
+      this.envoyerDonneesDuPanier();
+  
       console.log("testbarcodeeeeeeeeeeee")
     }  
     validateAmount(amount: string): boolean {
@@ -1005,41 +1002,48 @@ showPrice() {
         this.Deliveryttc = 10;
       }
     }
-    downloadAsPDF() {
-      // this.envoyerDonneesDuPanier();
-      this.showFirstButton = !this.showFirstButton;
-      this.showFirstRow = !this.showFirstRow;
 
-      const pdf = new jsPDF();
-    
-      this.panier.forEach((item, index) => {
-        if (index > 0) {
-          pdf.addPage();
-        }    
-        pdf.setFont("helvetica");
-        pdf.setFontSize(12);    
-        let y = 10;    
-        pdf.setDrawColor(0);
-        pdf.setFillColor(255, 255, 255);
-        pdf.rect(10, y, 190, 120, 'F');  
-        y += 20;     
-        pdf.setFontSize(16);
-        pdf.setFont('bold');
-        pdf.text(`Nom: ${item.dest_name}`, 20, y);    
-        pdf.setFontSize(12);
-        pdf.setFont('normal');
-        pdf.text(`Quartier : ${item.quartier_destination}`, 20, y+ 10);    
-        pdf.text(`Type d'expédition: ${item.type_expedition}`, 20, y + 10);
-        pdf.text(`Poids: ${item.poids} kg`, 20, y + 20);
-        pdf.text(`Prix: ${item.prix || 0} MAD`, 20, y + 30);
-        pdf.text(`Total: ${(item.Total || item.Total2).toFixed(2)} MAD`, 20, y + 40);    
-        if (item.barcodeImage) {
-          pdf.addImage(item.barcodeImage, 'PNG', 20, y + 50, 50, 20);
+      downloadAsPDF() {
+        if (this.typeSaisi === 'Importation') {
+          this.showFirstButton = !this.showFirstButton;
+          this.showFirstRow = !this.showFirstRow;
+        } else {
+          this.showFirstButton = !this.showFirstButton;
         }
-      });
-    
-      pdf.save('panier.pdf');
-    }
-    
+        const pdf = new jsPDF();
+        const logoUrl = 'assets/logo_pro.png'; 
+      
+        this.panier.forEach((item, index) => {
+          if (index > 0) {
+            pdf.addPage();
+          }
+          const imgWidth = 50; 
+          const imgHeight = 20; 
+          pdf.addImage(logoUrl, 'PNG', 10, 10, imgWidth, imgHeight);
+          pdf.setFont("helvetica");
+          pdf.setFontSize(12);
+          let y = 40; 
+          pdf.setDrawColor(0);
+          pdf.setFillColor(255, 255, 255);
+          pdf.rect(10, y, 190, 120, 'F');
+          y += 20;
+          pdf.setFontSize(16);
+          pdf.setFont('bold');
+          pdf.text(`Nom: ${item.dest_name}`, 20, y);
+          pdf.setFontSize(12);
+          pdf.setFont('normal');
+          pdf.text(`Quartier : ${item.quartier_destination}`, 20, y + 10);
+          pdf.text(`Type d'expédition: ${item.type_expedition}`, 20, y + 20);
+          pdf.text(`Poids: ${item.poids} kg`, 20, y + 30);
+          pdf.text(`Prix: ${item.prix || 0} MAD`, 20, y + 40);
+          pdf.text(`Ville Source: ${item.ville_source}`, 20, y + 20);
+          pdf.text(`Total: ${(item.Total || item.Total2).toFixed(2)} MAD`, 20, y + 50);
+          if (item.barcodeImage) {
+            pdf.addImage(item.barcodeImage, 'PNG', 20, y + 60, 50, 20);
+          }
+        });   
+        pdf.save('panier.pdf');
+      }
+
   }
 

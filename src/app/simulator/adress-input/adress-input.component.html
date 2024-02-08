@@ -49,22 +49,7 @@
                 </div>
               </div>
           </div>
-          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100" *ngIf="typeSaisi=='Importation'">
-            <span style="font-weight: bold; color: #68c054;">
-              <i class="fa-solid fa-arrow-right"></i>
-              Merci de respecter le canva suivant:
-              &NonBreakingSpace;&NonBreakingSpace;
-              <i class="fa-solid fa-file-excel" (click)="downloadExcel()" style="font-size: 25px;"></i>
-          </span>
-          
-            <br/><br/>
-              <div class="d-flex">
-                <div class="form-check mr-5 " style="margin-right: 50px;">
-                  <input class="form-control" type="file" id="fileInput" #fileInput>
-                </div>
-              </div>
-             
-          </div>
+    
   
           <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="300">          
             <h5>Expédition</h5>
@@ -94,7 +79,24 @@
               Trouver un point relais
             </a>
             </div>
-          </div>    
+          </div>   
+          <div class="form-group f-5" data-aos="fade-right" data-aos-delay="100" *ngIf="typeSaisi=='Importation'">
+            <span style="font-weight: bold; color: #68c054;">
+              <i class="fa-solid fa-arrow-right"></i>
+              Merci de respecter le canva suivant:
+              &NonBreakingSpace;&NonBreakingSpace;
+              <i class="fa-solid fa-file-excel" (click)="downloadExcel()" style="font-size: 25px;"></i>
+          </span>
+          
+            <br/><br/>
+              <div class="d-flex">
+                <div class="form-check mr-5 " style="margin-right: 50px;">
+                  <input class="form-control" type="file" id="fileInput" #fileInput>
+                </div>
+              </div>
+             
+          </div> 
+          
           <div class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-right" data-aos-delay="400" *ngIf="typeSaisi=='Saisie manuel'">
             <h5>Destination</h5>       
             <div class = "f-5">
@@ -415,7 +417,7 @@ Le poids ne doit pas excéder 20 kg.
     width: 160px;">Continuer</button> 
                     <button type="submit" class="btn btn-primary mb-2" (click)="importFile()" *ngIf="showFirstRow  && typeSaisi=='Importation'" data-bs-toggle="modal" data-bs-target="#PanierModal">Importer</button>
              <div *ngIf="!showFirstRow" >
-              <button type="submit" class="btn btn-primary"  (click)="BackRows()" *ngIf="!showFirstRow" style="border: none;
+              <button type="submit" class="btn btn-primary"  (click)="BackRows()" *ngIf="showFirstButton" style="border: none;
               border-radius: 9%;
               width: 160px;"> <i class="fa-solid fa-backward"></i> Retour</button> &NonBreakingSpace;&NonBreakingSpace; 
 
@@ -606,31 +608,44 @@ Le poids ne doit pas excéder 20 kg.
     </div>
   </div>
 </div>
-<div class="modal fade map-content" id="PanierModal" tabindex="-1" aria-labelledby="PanierModal" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+<div class="modal fade map-content" id="PanierModal" tabindex="-1" aria-labelledby="PanierModal" aria-hidden="true" >
+  <div class="modal-dialog modal-lg" style="min-width: 56%;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="container-fluid">
-          <div class="cart-item" *ngFor="let item of panier; let i = index">
-            <div class="item-header">
-              <i class="fa-solid fa-box-open item-icon"></i>
-              <span class="item-name">{{ item.dest_name }}</span>
-
-            </div>
+          <div class="cart-item">
             <div class="item-body">
-              <span class="item-detail">{{ item.type_expedition }}</span>
-              <span class="item-detail">{{ item.poids }} kg</span>
-              <span class="item-detail">{{ ((item.contre_remboursement ? item.contre_remboursement : 0) * 0.8 / 100).toFixed(2) || 0 }} MAD</span>
-              <span class="item-detail">{{ ((item.assurance ? item.assurance : 0) * 0.5 / 100).toFixed(2)  || 0  }} MAD</span>
-              <span class="item-detail">{{ item.prix  || 0 }} MAD</span>
-              <span class="item-detail">{{ (item.Total || item.Total2).toFixed(2)}} MAD</span>
-            </div>
-            <div class="item-footer">
-              <span class="item-total"></span>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"><i class="fa-solid fa-box-open item-icon"></i></th>
+                    <th >Type d'expedition</th>
+                    <th scope="col">Poids</th>
+                    <th scope="col">Contre rembousement</th>
+                    <th scope="col">Assurance</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Total</th>                    
+                  </tr>
+                </thead>
+                <tbody *ngFor="let item of panier; let i = index">
+                  <tr>
+                    <td><span class="item-name">{{ item.dest_name }}</span></td>
+                    <td><span class="item-detail">{{ item.type_expedition }}</span></td>
+                    <td><span class="item-detail">{{ item.poids }} kg</span></td>
+                    <td><span class="item-detail">{{ ((item.contre_remboursement ? item.contre_remboursement : 0) * 0.8 / 100).toFixed(2) || 0 }} MAD</span></td>
+                    <td><span class="item-detail">{{ ((item.assurance ? item.assurance : 0) * 0.5 / 100).toFixed(2)  || 0  }} MAD</span></td>
+                    <td><span class="item-detail">{{ item.prix  || 0 }} MAD</span></td>
+                    <td><span class="item-detail">{{ (item.Total || item.Total2).toFixed(2)}} MAD</span></td>
+                    <td>
+                      <span class="item-total"></span>
               <i class="fa-solid fa-trash item-delete" (click)="supprimerDuPanier(i)" *ngIf="showFirstButton"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -645,7 +660,7 @@ Le poids ne doit pas excéder 20 kg.
             <!-- <button type="submit" class="btn btn-primary" style="background-color: #f7e164;
             color: #6cbf44;border: none;font-weight: bold;" (click)="downloadAsPDF()">Récuperer mon code d'envoi</button> -->
       <button type="submit" class="btn btn-primary" style="background-color: #f7e164;
-      color: #6cbf44;border: none;font-weight: bold;" (click)="envoyerDonneesDuPanier()">Récuperer mon code d'envoi</button>
+      color: #6cbf44;border: none;font-weight: bold;" (click)="envoyerDonneesDuPanier()" *ngIf="showFirstButton">Récuperer mon code d'envoi</button>
           </div> 
   </div>
   </div>
