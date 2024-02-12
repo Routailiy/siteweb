@@ -300,61 +300,79 @@ interface LigneDonnees {
     @ViewChild('fileInput') fileInput!: ElementRef;
 
   public lignes: LigneDonnees[] = [];
+  errorMessages: string[] = [];
 
-onFileChange(evt: any) {
-  const target: DataTransfer = <DataTransfer>(evt.target);
-  if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-
-  const reader: FileReader = new FileReader();
-  reader.onload = (e: ProgressEvent<FileReader>) => {
-    const bstr = e.target?.result;
-    if (typeof bstr !== 'string') {
-      throw new Error('Expected a string from FileReader');
-    }
-    const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-    const wsname: string = wb.SheetNames[0];
-    const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-    const data: any[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
-    if (data && data.length > 1) {
-      this.lignes = data.slice(1).reduce((acc, row) => {
-        if (row && row.length > 0 && row[0] && row[3]) {
-          const poidsLigne = parseFloat(row[9]); 
-          const prixLigne = this.showPrice2(poidsLigne); 
-          const ligne: LigneDonnees = {
-            destinataire_name: row[0],
-            destinataire_phone: row[1],
-            cin: row[2],
-            villeDestination: row[3],
-            NumeroQuartier: row[4],
-            quartierDestination: row[5],
-            AdressDes: row[6],
-            typeExpedition: row[7],
-            typeLivraison: row[8],
-            poids: poidsLigne,
-            price: prixLigne, // Stockez le prix calculé dans la ligne
-            showAmountInput: (row[10] === 'Espèces' || row[10] === 'Chèque'),
-            additionalAmount: row[10] === 'Aucun' ? 0 : row[11],
-            showAmountInput2: row[12] !== null && row[12] !== undefined && row[12] !== '',
-            AssuranceAmount: row[12] ? row[12] : 0, 
-            payment:row[13],
-          };
-          acc.push(ligne);
+  onFileChange(evt: any) {
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+  
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      const bstr = e.target?.result;
+      if (typeof bstr !== 'string') {
+        throw new Error('Expected a string from FileReader');
+      }
+      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+      const data: any[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  
+      if (data && data.length > 1) {
+        const emptyFieldsMessages: string[] = [];
+        this.lignes = data.slice(1).reduce((acc, row, rowIndex) => {
+          const emptyFields: string[] = [];
+          if (!row[0]) emptyFields.push('Nom destinataire');
+          if (!row[1]) emptyFields.push('Téléphone destinataire');
+          if (!row[3]) emptyFields.push('Ville destination');
+          if (!row[5]) emptyFields.push('Quartier destination');
+          if (!row[6]) emptyFields.push('Adresse destination');
+          if (!row[7]) emptyFields.push('Type expedition');
+          if (!row[8]) emptyFields.push('Type livraison');
+  
+          if (emptyFields.length > 0) {
+            const errorMessage = `Champ vide dans la ligne ${rowIndex + 2}: ${emptyFields.join(', ')}`;
+            emptyFieldsMessages.push(errorMessage);
+            this.errorMessages.push(errorMessage);
+          } else {
+            const poidsLigne = parseFloat(row[9]); 
+            const prixLigne = this.showPrice2(poidsLigne); 
+            const ligne: LigneDonnees = {
+              destinataire_name: row[0],
+              destinataire_phone: row[1],
+              cin: row[2],
+              villeDestination: row[3],
+              NumeroQuartier: row[4],
+              quartierDestination: row[5],
+              AdressDes: row[6],
+              typeExpedition: row[7],
+              typeLivraison: row[8],
+              poids: poidsLigne,
+              price: prixLigne,
+              showAmountInput: (row[10] === 'Espèces' || row[10] === 'Chèque'),
+              additionalAmount: row[10] === 'Aucun' ? 0 : row[11],
+              showAmountInput2: row[12] !== null && row[12] !== undefined && row[12] !== '',
+              AssuranceAmount: row[12] ? row[12] : 0, 
+              payment:row[13],
+            };
+            acc.push(ligne);
+          }
+          return acc;
+        }, []);
+  
+        if (emptyFieldsMessages.length > 0) {
+          console.error('Erreurs lors de l\'importation du fichier :', emptyFieldsMessages);
+        } else {
+          this.ajouterAuPanier();
         }
-        return acc;
-      }, []);
-      this.ajouterAuPanier();
-    } else {
-      console.error('Format de données incorrect');
-    }
-  };
-
-  reader.readAsBinaryString(target.files[0]);
-}
-
-
-
-    importFile() {
+      } else {
+        console.error('Format de données incorrect');
+      }
+    };
+  
+    reader.readAsBinaryString(target.files[0]);
+  }
+  
+  importFile() {
       const files = this.fileInput.nativeElement.files;
       if (files && files.length >= 1) {
         this.onFileChange({ target: { files: files } });
@@ -490,7 +508,7 @@ onFileChange(evt: any) {
         deliveryDates.push(tempDate); 
 
         tempDate = new Date(date);
-        tempDate.setDate(tempDate.getDate() + 2);
+        tempDate.setDate(tempDate.getDate() + 3);
         deliveryDates.push(tempDate); 
       }
       const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };

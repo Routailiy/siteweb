@@ -416,6 +416,12 @@ Le poids ne doit pas excéder 20 kg.
     border-radius: 9%;
     width: 160px;">Continuer</button> 
                     <button type="submit" class="btn btn-primary mb-2" (click)="importFile()" *ngIf="showFirstRow  && typeSaisi=='Importation'" data-bs-toggle="modal" data-bs-target="#PanierModal">Importer</button>
+                    <div *ngIf="errorMessages.length > 0">
+                      <h2>Erreurs lors de l'importation du fichier :</h2>
+                      <ul>
+                        <li *ngFor="let errorMessage of errorMessages" style="color: red;">{{ errorMessage }}</li>
+                      </ul>
+                    </div>
              <div *ngIf="!showFirstRow" >
               <button type="submit" class="btn btn-primary"  (click)="BackRows()" *ngIf="showFirstButton" style="border: none;
               border-radius: 9%;
@@ -586,24 +592,14 @@ Le poids ne doit pas excéder 20 kg.
                   <p><i class="fa-solid fa-route"></i> {{ selectedMarker.distance }} KM</p>
                   <p><i class="fa-solid fa-person-walking"></i> {{ selectedMarker.walkingTime }}</p>
                   <p><i class="fa-solid fa-car"></i> {{ selectedMarker.drivingTime }}</p>
-
                 </div>
               </map-info-window>
-            </google-map>
-            
-          
-            
+            </google-map>     
         </div>
-      
-  
-        
-        </div>
-      
-      </div>
-      
+        </div>      
+      </div>      
       <div class="modal-footer">
         <button type="button" class="btn" data-bs-dismiss="modal">Valider mon choix</button>
-        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
       </div>
     </div>
   </div>
@@ -638,7 +634,7 @@ Le poids ne doit pas excéder 20 kg.
                     <td><span class="item-detail">{{ ((item.contre_remboursement ? item.contre_remboursement : 0) * 0.8 / 100).toFixed(2) || 0 }} MAD</span></td>
                     <td><span class="item-detail">{{ ((item.assurance ? item.assurance : 0) * 0.5 / 100).toFixed(2)  || 0  }} MAD</span></td>
                     <td><span class="item-detail">{{ item.prix  || 0 }} MAD</span></td>
-                    <td><span class="item-detail">{{ (item.Total || item.Total2).toFixed(2)}} MAD</span></td>
+                    <td><span class="item-detail" style="color: red;font-weight: bold;">{{ (item.Total || item.Total2).toFixed(2)}} MAD</span></td>
                     <td>
                       <span class="item-total"></span>
               <i class="fa-solid fa-trash item-delete" (click)="supprimerDuPanier(i)" *ngIf="showFirstButton"></i>
@@ -657,10 +653,11 @@ Le poids ne doit pas excéder 20 kg.
       </div>
       
            <div class="modal-footer">
+           
             <!-- <button type="submit" class="btn btn-primary" style="background-color: #f7e164;
             color: #6cbf44;border: none;font-weight: bold;" (click)="downloadAsPDF()">Récuperer mon code d'envoi</button> -->
       <button type="submit" class="btn btn-primary" style="background-color: #f7e164;
-      color: #6cbf44;border: none;font-weight: bold;" (click)="envoyerDonneesDuPanier()" *ngIf="showFirstButton">Récuperer mon code d'envoi</button>
+      color: #6cbf44;border: none;font-weight: bold;" (click)="envoyerDonneesDuPanier()" *ngIf="showFirstButton && typeSaisi=='Importation'">Récuperer mon code d'envoi</button>
           </div> 
   </div>
   </div>
